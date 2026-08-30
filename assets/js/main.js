@@ -181,6 +181,27 @@
     var original = track.innerHTML;
     track.innerHTML = original + original;
     track.setAttribute('aria-hidden', 'true');
+
+    // The marquee travels -50% of the track's own width, so the seam only
+    // lands correctly once the width has stopped changing. Duplicating the
+    // markup, decoding the logos and swapping in the web font all move it,
+    // and each move shows up as a stutter. Restart the animation after the
+    // last of them instead of letting it run through the reflow.
+    function restart() {
+      track.style.animation = 'none';
+      void track.offsetWidth;          // force reflow so the restart takes
+      track.style.animation = '';
+    }
+    var imgs = Array.prototype.slice.call(track.querySelectorAll('img'));
+    var settle = Promise.all(imgs.map(function (img) {
+      return img.decode ? img.decode().catch(function () {}) :
+        (img.complete ? Promise.resolve() :
+          new Promise(function (r) { img.onload = img.onerror = r; }));
+    }));
+    if (document.fonts && document.fonts.ready) {
+      settle = Promise.all([settle, document.fonts.ready]);
+    }
+    settle.then(restart);
   })();
 
   /* ----------------------------------------------------------
@@ -300,14 +321,86 @@
 
     if (reduceMotion) return;   // one static frame is enough
 
+    // A full-screen shader redrawing every frame for the whole session is a
+    // steady GPU cost that shows up elsewhere on the page — the ticker was
+    // stuttering because of it. Draw only while the hero is actually on
+    // screen and the tab is in front; the clock keeps running either way, so
+    // the bands are where they should be when it comes back.
     var start = performance.now();
-    (function loop() {
+    var raf = 0;
+    var onScreen = true;
+
+    function loop() {
       render((performance.now() - start) / 1000);
-      requestAnimationFrame(loop);
-    })();
+      raf = requestAnimationFrame(loop);
+    }
+    function play() {
+      if (raf || !onScreen || document.hidden) return;
+      raf = requestAnimationFrame(loop);
+    }
+    function stop() {
+      if (!raf) return;
+      cancelAnimationFrame(raf);
+      raf = 0;
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        onScreen = entries[0].isIntersecting;
+        onScreen ? play() : stop();
+      }, { threshold: 0 }).observe(canvas);
+    }
+    document.addEventListener('visibilitychange', function () {
+      document.hidden ? stop() : play();
+    });
+    play();
 
     window.addEventListener('resize', function () { w = 0; h = 0; });
   })();
+
+  /* ----------------------------------------------------------
+     GALLERY: SHOW MORE
+     The tail of the mosaic is folded away so the section stays short.
+     ---------------------------------------------------------- */
+  (function mosaicMore() {
+    var btn = $('#mosaicMore');
+    var grid = $('#mosaic');
+    if (!btn || !grid) return;
+
+    var hidden = $$('.mo-more', grid);
+    if (!hidden.length) { btn.parentNode.style.display = 'none'; return; }
+    $('.more-count', btn).textContent = '+' + hidden.length;
+
+    btn.addEventListener('click', function () {
+      var open = grid.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      $('.more-label', btn).textContent = open ? 'Згорнути' : 'Більше фото';
+      if (!open) grid.scrollIntoView({ block: 'nearest' });
+    });
+  })();
+
+  /* ----------------------------------------------------------
+     SEGMENT PORTRAITS
+     Same idea as the laureate cards: a segment shows its line icon
+     until a photo turns up at assets/img/segments/<name>.jpg.
+     ---------------------------------------------------------- */
+  $$('.seg-face[data-photo]').forEach(function (slot) {
+    var src = slot.getAttribute('data-photo');
+    if (!src) return;
+    var probe = new Image();
+    probe.onload = function () {
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = slot.getAttribute('data-alt') || '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      slot.appendChild(img);
+      slot.classList.add('has-photo');
+      var ic = $('.ic', slot);
+      if (ic) ic.style.display = 'none';
+    };
+    probe.src = src;
+  });
 
   /* ----------------------------------------------------------
      LAUREATE PORTRAITS

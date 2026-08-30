@@ -290,6 +290,23 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
   transition:color .45s var(--ease),border-color .45s var(--ease),
              background .45s var(--ease),box-shadow .45s var(--ease);
 }
+/* Segment cards carry a round portrait instead of a rounded square once a
+   photo exists in assets/img/segments/. Until then the line icon stands in. */
+.seg-face{
+  position:relative;overflow:hidden;
+  width:clamp(56px,5.6vw,68px);height:clamp(56px,5.6vw,68px);
+  border-radius:50%;
+}
+.seg-face img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  border-radius:50%;
+  transition:transform .8s var(--ease);
+}
+.card:hover .seg-face img{transform:scale(1.07)}
+/* a hairline ruby ring picks up on hover, like the rest of the card */
+.seg-face.has-photo{background:#0C0C0E;border-color:rgba(255,255,255,.14)}
+
 .card:hover .card-icon,
 .host:hover .card-icon{
   color:var(--ruby);
@@ -343,7 +360,12 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
   animation:marquee 46s linear infinite;
   will-change:transform;
 }
-.ticker:hover .ticker-track{animation-play-state:paused}
+/* Only a real pointer pauses the band. On touch, :hover sticks after a tap
+   and the marquee would sit frozen until the user tapped somewhere else —
+   which reads as the ticker randomly hanging. */
+@media (hover:hover) and (pointer:fine){
+  .ticker:hover .ticker-track{animation-play-state:paused}
+}
 /* the track is duplicated by JS, so -50% lands exactly on the seam */
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
@@ -669,6 +691,16 @@ body.locked{overflow:hidden}
   margin-bottom:clamp(14px,1.6vw,18px);
 }
 .video-head h3{margin:0}
+/* The broadcaster's own mark. Novy's logo is a dark shape with the letter
+   knocked out of it, so it needs the same light chip the channel wall uses —
+   dropped straight onto the dark card it disappears. */
+.vh-brand{display:inline-flex;align-items:center;gap:12px}
+.vh-brand .vh-mark{
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  width:44px;height:44px;padding:7px;
+  background:#F5F5F7;border-radius:12px;
+}
+.vh-brand img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
 .video-frame{
   position:relative;overflow:hidden;
   border-radius:clamp(14px,1.6vw,18px);
@@ -698,6 +730,40 @@ body.locked{overflow:hidden}
   transition:transform .9s var(--ease);
 }
 .mosaic figure:hover img{transform:scale(1.06)}
+/* the tail of the gallery is folded away until the + is pressed */
+.mosaic figure.mo-more{display:none}
+.mosaic.open figure.mo-more{display:block}
+
+.mosaic-more{display:flex;justify-content:center;margin-top:clamp(16px,2vw,24px)}
+.more-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  min-height:48px;padding:13px 26px;
+  border-radius:999px;
+  border:1px solid var(--stroke);
+  background:var(--glass);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  color:var(--white);
+  font-size:14px;font-weight:600;letter-spacing:-.012em;
+  cursor:pointer;
+  transition:background .4s var(--ease),border-color .4s var(--ease),
+             transform .4s var(--ease);
+}
+.more-btn:hover{background:var(--glass-hi);border-color:var(--ruby-soft);transform:translateY(-2px)}
+/* the plus is two bars; the vertical one rotates away when the gallery opens */
+.more-plus{position:relative;width:14px;height:14px;flex-shrink:0}
+.more-plus::before,.more-plus::after{
+  content:"";position:absolute;left:50%;top:50%;
+  background:var(--ruby);border-radius:2px;
+  transition:transform .45s var(--ease);
+}
+.more-plus::before{width:14px;height:1.5px;transform:translate(-50%,-50%)}
+.more-plus::after {width:1.5px;height:14px;transform:translate(-50%,-50%)}
+.more-btn[aria-expanded="true"] .more-plus::after{transform:translate(-50%,-50%) rotate(90deg)}
+.more-count{
+  font-size:12px;font-weight:600;color:var(--graphite);
+  padding-left:12px;border-left:1px solid var(--stroke);
+}
+.more-btn[aria-expanded="true"] .more-count{display:none}
 
 /* ============================================================
    LAUREATES
@@ -1146,13 +1212,13 @@ body.locked{overflow:hidden}
   }
   .cap-long{display:none}
   .cap-short{display:inline}
-  .hero-logo{width:min(76%,290px)}
+  .hero-logo{width:min(66%,252px)}
   .hero-hosts{
     /* breaks out of the wrap padding: the figure's width was the real cap.
        Undoing the padding is exact; 100vw would also count the scrollbar. */
     width:calc(100% + 2*var(--pad));max-width:none;
     margin-inline:calc(-1*var(--pad));
-    margin-top:-8px;
+    margin-top:8px;
   }
   .hero-hosts img{max-height:min(50vh,460px)}
   .hero-inner{gap:9px}
