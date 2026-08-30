@@ -7,11 +7,20 @@
    і зможе слати повідомлення у ваш чат від імені бота.
    Тут токен лежить у змінних Worker'а і назовні не виходить.
 
-   Змінні (Settings -> Variables and Secrets):
-     BOT_TOKEN       secret   токен від @BotFather
-     CHAT_ID         secret   куди слати заявки
-     ALLOWED_ORIGIN  text     https://ouranus4.github.io
+   Треба додати рівно одну змінну (Settings -> Variables and Secrets):
+     BOT_TOKEN   тип Secret   токен від @BotFather
+
+   Номер чату й дозволений домен — не секрети, вони нижче в коді.
+   Якщо колись зміняться, їх можна або виправити тут, або перекрити
+   змінними CHAT_ID / ALLOWED_ORIGIN у тих самих налаштуваннях.
    ============================================================ */
+
+// Куди падають заявки — група «MedOrion / заявки»
+const DEFAULT_CHAT_ID = '-1004475490563';
+
+// Звідки дозволено надсилати. Коли зʼявиться власний домен премії,
+// впишіть його сюди замість адреси GitHub Pages.
+const DEFAULT_ORIGIN = 'https://ouranus4.github.io';
 
 const FIELDS = {
   name:       { label: 'Імʼя',      max: 120 },
@@ -24,7 +33,7 @@ const FIELDS = {
 
 export default {
   async fetch(request, env) {
-    const origin = env.ALLOWED_ORIGIN || '*';
+    const origin = env.ALLOWED_ORIGIN || DEFAULT_ORIGIN;
     const cors = {
       'Access-Control-Allow-Origin': origin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -39,7 +48,8 @@ export default {
     if (request.method !== 'POST') {
       return reply({ ok: false, error: 'method_not_allowed' }, 405, cors);
     }
-    if (!env.BOT_TOKEN || !env.CHAT_ID) {
+    const chatId = env.CHAT_ID || DEFAULT_CHAT_ID;
+    if (!env.BOT_TOKEN) {
       return reply({ ok: false, error: 'not_configured' }, 500, cors);
     }
 
@@ -71,7 +81,7 @@ export default {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          chat_id: env.CHAT_ID,
+          chat_id: chatId,
           text: format(data),
           parse_mode: 'HTML',
           disable_web_page_preview: true
