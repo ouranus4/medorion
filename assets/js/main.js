@@ -359,6 +359,31 @@
   })();
 
   /* ----------------------------------------------------------
+     STORY VIDEO
+     The native centred play button lands on the reporter's face, so the
+     video ships without controls and we drive the first play ourselves.
+     ---------------------------------------------------------- */
+  (function storyVideo() {
+    var frame = $('#videoFrame');
+    var video = $('#storyVideo');
+    var btn = $('#storyPlay');
+    if (!frame || !video || !btn) return;
+
+    btn.addEventListener('click', function () {
+      video.setAttribute('controls', '');
+      frame.classList.add('playing');
+      var p = video.play();
+      // autoplay policies can still refuse; leave the controls so the
+      // viewer can start it by hand rather than facing a dead frame
+      if (p && p.catch) p.catch(function () {});
+    });
+
+    video.addEventListener('pause', function () {
+      if (video.currentTime === 0) frame.classList.remove('playing');
+    });
+  })();
+
+  /* ----------------------------------------------------------
      GALLERY: SHOW MORE
      The tail of the mosaic is folded away so the section stays short.
      ---------------------------------------------------------- */

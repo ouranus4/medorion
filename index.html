@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/main.css?v=20260831b">
+<link rel="stylesheet" href="assets/css/main.css?v=20260831c">
 
 <script type="application/ld+json">
 {
@@ -332,11 +332,16 @@
     </div>
 
     <div class="note-bar rv d2">
-      <p>Лауреатів обирає Експертна рада — всеукраїнська та міжнародна колегія лідерів
-        медицини, науки, біотехнологій та інноваційного бізнесу. П'ять секцій:
-        клінічна та естетична медицина · хірургія та медичні інновації · медичні
-        технології й обладнання · біотехнології та фармацевтика · глобальний вплив
-        і благодійність.</p>
+      <p>Лауреатів обирає <strong>Експертна рада</strong> — <span class="soft">всеукраїнська
+        та міжнародна колегія лідерів медицини, науки, біотехнологій та інноваційного
+        бізнесу.</span></p>
+      <ul class="board">
+        <li>Клінічна та естетична медицина</li>
+        <li>Хірургія та медичні інновації</li>
+        <li>Медичні технології й обладнання</li>
+        <li>Біотехнології та фармацевтика</li>
+        <li>Глобальний вплив і благодійність</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -363,9 +368,7 @@
         </div>
         <div class="card-body">
           <h3>Лікарям-косметологам і дерматологам</h3>
-          <p>Поки ніша змагається знижками, ви виходите з цієї гри зовсім. Національна
-            відзнака, сюжети на телебаченні та публікації в глянці ставлять ваше імʼя
-            поруч зі словом «експерт» — і закріплюють його там надовго.</p>
+          <p>Ін'єкційна та апаратна косметологія, дерматологія, антиейдж, трихологія.</p>
           <span class="card-note">Результат: пацієнти з чеками від&nbsp;$1&nbsp;000</span>
         </div>
       </article>
@@ -378,10 +381,9 @@
         </div>
         <div class="card-body">
           <h3>Пластичним хірургам</h3>
-          <p>У хірургії обирають не процедуру, а спокій. Пацієнт місяцями шукає, кому
-            довірити обличчя й тіло, і зупиняється на тому, чию кваліфікацію підтвердив
-            хтось, окрім нього самого. Премія дає це підтвердження публічно.</p>
-          <span class="card-note">Результат: рішення визріває до першої консультації</span>
+          <p>Естетична, реконструктивна та щелепно-лицева хірургія, ринопластика,
+            мамопластика.</p>
+          <span class="card-note">Результат: довіра ще до першої консультації</span>
         </div>
       </article>
 
@@ -393,9 +395,8 @@
         </div>
         <div class="card-body">
           <h3>Власникам клінік і медичних центрів</h3>
-          <p>Клініку зчитують очима: за тим, що висить у холі, що йде на екранах у залі
-            очікування і що видає пошук за назвою. Статус лауреата дає всі три — відзнаку,
-            готові телесюжети та потік публікацій на цілий рік.</p>
+          <p>Клініки естетичної медицини, стоматології, лабораторії, велнес- та
+            реабілітаційні центри.</p>
           <span class="card-note">Результат: інвестори та VIP-пацієнти</span>
         </div>
       </article>
@@ -408,9 +409,8 @@
         </div>
         <div class="card-body">
           <h3>Брендам, дистрибʼюторам і просторам краси</h3>
-          <p>За один вечір у залі — власники клінік, топ-лікарі та ті, хто ухвалює рішення
-            про закупівлі. Люди, до яких у звичайному режимі йдуть холодними листами
-            й місяцями перемовин. Тут ви говорите з ними за одним столом.</p>
+          <p>Виробники препаратів і обладнання, дистрибуція, професійна косметика,
+            салони та б'юті-простори.</p>
           <span class="card-note">Результат: партнерства за один вечір</span>
         </div>
       </article>
@@ -423,7 +423,7 @@
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow rv">Звіт за минулий сезон</p>
-      <h2 class="rv d1">Як це було <span class="mute">і що з цього лишилось у вас</span></h2>
+      <h2 class="rv d1">Як це було <span class="mute">минулого сезону</span></h2>
       <p class="lead rv d2">
         Перша церемонія зібрала галузь у Fairmont Grand Hotel і вийшла в ефір
         національних каналів. Ось цифри сезону.
@@ -525,8 +525,8 @@
         </span>
         <h3>Сюжет про премію в ефірі Нового каналу</h3>
       </div>
-      <div class="video-frame">
-        <video controls preload="none"
+      <div class="video-frame" id="videoFrame">
+        <video id="storyVideo" preload="none"
                poster="assets/video/novyi-kanal-poster.jpg"
                playsinline
                width="1280" height="720">
@@ -534,6 +534,11 @@
           Ваш браузер не підтримує відтворення відео.
           <a href="assets/video/novyi-kanal.mp4">Завантажити сюжет</a>
         </video>
+        <button class="video-play" type="button" id="storyPlay"
+                aria-label="Дивитися сюжет про премію">
+          <span class="vp-icon" aria-hidden="true"></span>
+          <span class="vp-text">Дивитися сюжет</span>
+        </button>
       </div>
     </div>
 
@@ -666,7 +671,7 @@
 <section id="media">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow rv">Медійне супроводження</p>
+      <p class="eyebrow rv">Медійний супровід</p>
       <h2 class="rv d1">15+ телеканалів <span class="mute">та провідних ЗМІ країни</span></h2>
       <p class="lead rv d2">
         Подію висвітлюють понад 15 національних телеканалів, топові портали
@@ -794,7 +799,7 @@
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow rv">Напрями відбору</p>
-      <h2 class="rv d1">Шість категорій <span class="mute">сезону 2026</span></h2>
+      <h2 class="rv d1">Шість категорій <span class="mute">відбору</span></h2>
     </div>
 
     <div class="noms">
@@ -844,10 +849,15 @@
     <div class="sec-head">
       <p class="eyebrow rv">Засновниця премії</p>
       <h2 class="rv d1">Марина Філіпенко</h2>
+      <a class="ig-link rv d1" href="https://www.instagram.com/marina_philipenko"
+         target="_blank" rel="noopener noreferrer">
+        <svg class="ic" aria-hidden="true"><use href="#i-instagram"></use></svg>
+        <span>@marina_philipenko</span>
+      </a>
       <p class="lead rv d2">
-        Понад 8 років професійно створює закриті преміальні події, продюсує особисті
-        бренди та формує бізнес-оточення найвищого рівня. Через її проєкти пройшли
-        сотні топ-підприємців, інвесторів, зірок та лідерів думок.
+        Продюсерка особистих брендів. Вісім років збирає в одній залі тих, хто ухвалює
+        рішення в медицині, б'юті та великому бізнесі — і виводить своїх людей у медіа,
+        на сцену та в перші рядки галузі.
       </p>
     </div>
 
@@ -864,11 +874,6 @@
              alt="Марина Філіпенко, засновниця MedOrion Awards"
              width="760" height="896" loading="lazy" decoding="async">
       </picture>
-      <a class="hh-tag hh-ig" href="https://www.instagram.com/marina_philipenko"
-         target="_blank" rel="noopener noreferrer">
-        <svg class="ic" aria-hidden="true"><use href="#i-instagram"></use></svg>
-        <span class="hh-name">@marina_philipenko</span>
-      </a>
     </figure>
 
     <div class="bento-3">
@@ -878,8 +883,8 @@
           <span class="card-tag">Досвід</span>
         </div>
         <div class="card-body">
-          <h3>8+ років закритих преміальних подій</h3>
-          <p>Формування бізнес-оточення найвищого рівня для експертів і підприємців.</p>
+          <h3>Вісім років у преміальних подіях</h3>
+          <p>Закриті заходи, де в одній залі — власники клінік, інвестори та лідери ринку.</p>
         </div>
       </article>
       <article class="card rv d1">
@@ -1144,6 +1149,6 @@
   </div>
 </div>
 
-<script src="assets/js/main.js?v=20260831b"></script>
+<script src="assets/js/main.js?v=20260831c"></script>
 </body>
 </html>
