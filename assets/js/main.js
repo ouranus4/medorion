@@ -14,7 +14,7 @@
   // ВАРІАНТ А (рекомендований). Адреса вашого Cloudflare Worker.
   // Токен бота лежить усередині Worker'а і в цей файл не потрапляє.
   // Інструкція: telegram-worker/README.md
-  var TG_ENDPOINT = '';   // напр. 'https://medorion-form.ім'я.workers.dev'
+  var TG_ENDPOINT = 'https://medorion-form.medorionawards.workers.dev';
   //
   // ВАРІАНТ Б (швидкий). Токен просто тут, без проксі.
   // Працює одразу, але репозиторій сайту ПУБЛІЧНИЙ: токен побачить
