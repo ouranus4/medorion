@@ -9,10 +9,20 @@
      CONFIGURATION — заповніть ці три константи
      ---------------------------------------------------------- */
 
-  // Telegram-бот, у чат якого падатимуть заявки.
-  // 1. Створіть бота через @BotFather -> отримаєте TOKEN
-  // 2. Додайте бота у ваш чат/групу, напишіть туди будь-що,
-  //    відкрийте https://api.telegram.org/bot<TOKEN>/getUpdates -> звідти візьміть chat.id
+  // ── КУДИ ПАДАЮТЬ ЗАЯВКИ ──────────────────────────────────
+  //
+  // ВАРІАНТ А (рекомендований). Адреса вашого Cloudflare Worker.
+  // Токен бота лежить усередині Worker'а і в цей файл не потрапляє.
+  // Інструкція: telegram-worker/README.md
+  var TG_ENDPOINT = '';   // напр. 'https://medorion-form.ім'я.workers.dev'
+  //
+  // ВАРІАНТ Б (швидкий). Токен просто тут, без проксі.
+  // Працює одразу, але репозиторій сайту ПУБЛІЧНИЙ: токен побачить
+  // будь-хто, хто відкриє сторінку, і зможе слати вам повідомлення
+  // від імені бота. Використовуйте, лише поки немає Worker'а.
+  // 1. @BotFather -> /newbot -> TOKEN
+  // 2. напишіть боту в потрібний чат, відкрийте
+  //    https://api.telegram.org/bot<TOKEN>/getUpdates -> звідти chat.id
   var TG_BOT_TOKEN = '';   // напр. '7712345678:AAG...'
   var TG_CHAT_ID   = '';   // напр. '-1002345678901' або '123456789'
 
@@ -602,20 +612,23 @@
       if (formError) formError.classList.remove('show');
       if (!validate()) return;
 
+      var honeypot = $('#f-company');
       var data = {
         name:       $('#f-name').value.trim(),
         phone:      $('#f-phone').value.trim(),
         status:     $('#f-status').value,
         nomination: $('#f-nomination').value,
         link:       $('#f-link').value.trim(),
-        message:    $('#f-message').value.trim()
+        message:    $('#f-message').value.trim(),
+        company:    honeypot ? honeypot.value : ''   // пастка для ботів
       };
 
       // Not configured yet — don't fail silently, and don't lose the lead.
-      if (!TG_BOT_TOKEN || !TG_CHAT_ID) {
+      if (!TG_ENDPOINT && (!TG_BOT_TOKEN || !TG_CHAT_ID)) {
         console.warn(
-          '[MedOrion] Telegram не налаштовано. Впишіть TG_BOT_TOKEN і TG_CHAT_ID ' +
-          'вгорі assets/js/main.js. Заявка НЕ була надіслана:', data
+          '[MedOrion] Прийом заявок не налаштовано. Впишіть TG_ENDPOINT ' +
+          '(або TG_BOT_TOKEN і TG_CHAT_ID) вгорі assets/js/main.js. ' +
+          'Заявка НЕ була надіслана:', data
         );
         showError(
           'Форму ще не підключено до Telegram-бота. Напишіть, будь ласка, ' +
@@ -628,20 +641,26 @@
       var original = submitBtn.textContent;
       submitBtn.textContent = 'Надсилаємо…';
 
-      fetch('https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendMessage', {
+      // Через проксі йде сира заявка — текст збирає Worker.
+      // Навпростець — уже готове повідомлення для Bot API.
+      var url  = TG_ENDPOINT ||
+                 ('https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendMessage');
+      var payload = TG_ENDPOINT ? data : {
+        chat_id: TG_CHAT_ID,
+        text: buildMessage(data),
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
+      };
+
+      fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TG_CHAT_ID,
-          text: buildMessage(data),
-          parse_mode: 'HTML',
-          disable_web_page_preview: true
-        })
+        body: JSON.stringify(payload)
       })
         .then(function (r) { return r.json(); })
         .then(function (res) {
           if (!res || res.ok !== true) {
-            throw new Error((res && res.description) || 'Telegram API error');
+            throw new Error((res && (res.description || res.error)) || 'send failed');
           }
           form.reset();
           openModal();

@@ -150,6 +150,29 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 .ig-link:hover{border-color:var(--ruby-soft);color:var(--white);background:var(--glass-hi)}
 .sec-cta{display:flex;justify-content:center;margin-top:clamp(28px,3.4vw,44px)}
 /* the board's five sections, as chips rather than a run-on sentence */
+/* a passage lifted out of the flow — wider type, a ruby rule down the side */
+.pull{
+  margin:0 0 clamp(30px,3.6vw,46px);
+  padding:clamp(22px,2.6vw,32px) clamp(22px,2.8vw,36px);
+  border-radius:var(--r-card);
+  border:1px solid var(--stroke);
+  border-left:2px solid var(--ruby);
+  background:var(--glass);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  max-width:860px;
+}
+.pull p{
+  margin:0 0 14px;
+  font-size:clamp(1rem,1.25vw,1.1rem);line-height:1.6;
+  color:var(--grey);letter-spacing:-.011em;
+}
+.pull p:last-of-type{margin-bottom:18px}
+.pull footer{
+  display:flex;align-items:center;gap:9px;
+  font-size:12.5px;font-weight:500;color:var(--dim);
+}
+.pull footer .ic{width:16px;height:16px;color:var(--graphite);flex-shrink:0}
+
 .board{
   display:flex;flex-wrap:wrap;gap:8px;
   list-style:none;margin:16px 0 0;padding:0;
@@ -1158,6 +1181,7 @@ body.locked{overflow:hidden}
 .form-note{font-size:12px;color:var(--dim);flex:1 1 200px;line-height:1.5}
 .btn[data-loading="true"]{opacity:.6;pointer-events:none}
 
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .form-error{
   display:none;margin-top:14px;padding:13px 16px;border-radius:14px;
   border:1px solid rgba(229,72,77,.4);background:rgba(229,72,77,.09);

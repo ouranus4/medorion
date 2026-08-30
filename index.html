@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/main.css?v=20260831c">
+<link rel="stylesheet" href="assets/css/main.css?v=20260831e">
 
 <script type="application/ld+json">
 {
@@ -286,12 +286,27 @@
       <p class="eyebrow rv">Про премію</p>
       <h2 class="rv d1">Друга щорічна <span class="mute">міжнародна премія MedOrion</span></h2>
       <p class="lead rv d2">
-        MedOrion Awards відзначає лікарів, клініки, виробників і бренди, які змінюють
-        обличчя сучасної медицини та б'юті-індустрії. Як сузір'я Оріона віками вело
-        мандрівників, так премія веде найкращих фахівців галузі — до визнання, довіри
+        MedOrion Awards відзначає тих, чия щоденна праця дарує людям шанс на життя,
+        відновлення та впевненість у собі: лікарів і науковців, хірургів, косметологів
+        і фахівців б'юті-індустрії, клініки, виробників та бренди. Як сузір'я Оріона
+        віками вело мандрівників, так премія веде найкращих — до визнання, довіри
         та впливу. Звідси й назва.
       </p>
     </div>
+
+    <blockquote class="pull rv d2">
+      <p><span class="mark">Професійність має значення</span> — так підсумував церемонію
+        сюжет «Нового каналу». Премія зібрала медиків, науковців і фахівців естетичної
+        та б'юті-індустрії, щоб нагадати: навіть під час війни країна говорить про
+        знання, розвиток і красу, а лікар не має права зупинятися.</p>
+      <p>Визнання тут — не формальність. Коли людина бачить, що її працю цінують, вона
+        береться за більше: розширює практику, вкладає в технології, підіймає українську
+        медицину до світових стандартів.</p>
+      <footer>
+        <svg class="ic" aria-hidden="true"><use href="#i-tv"></use></svg>
+        За матеріалами сюжету «Нового каналу» про церемонію
+      </footer>
+    </blockquote>
 
     <div class="bento-3">
       <article class="card rv">
@@ -1079,6 +1094,13 @@
             <textarea id="f-message" name="message" placeholder="Коротко про ваші досягнення, клініку або бренд"></textarea>
           </div>
 
+          <!-- Пастка для ботів: людина цього поля не бачить і не заповнює.
+               Заповнене — заявка тихо відкидається. -->
+          <div class="hp" aria-hidden="true">
+            <label for="f-company">Не заповнюйте це поле</label>
+            <input id="f-company" name="company" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
         </div>
 
         <div class="form-error" id="formError" role="alert"></div>
@@ -1149,6 +1171,6 @@
   </div>
 </div>
 
-<script src="assets/js/main.js?v=20260831c"></script>
+<script src="assets/js/main.js?v=20260831e"></script>
 </body>
 </html>
