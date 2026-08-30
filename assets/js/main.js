@@ -35,7 +35,6 @@
   // Куди вести людину, якщо мережа підвела
   var TG_FALLBACK = 'https://t.me/marina_philipenko';
 
-  var CEREMONY = new Date('2026-11-02T16:00:00+02:00');
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var canHover     = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -122,30 +121,6 @@
     revealables.forEach(function (el) { io.observe(el); });
   }
 
-  /* ----------------------------------------------------------
-     COUNTDOWN
-     ---------------------------------------------------------- */
-  var cdCells = {
-    days:  $('[data-cd="days"]'),
-    hours: $('[data-cd="hours"]'),
-    mins:  $('[data-cd="mins"]'),
-    secs:  $('[data-cd="secs"]')
-  };
-  function pad(n) { return n < 10 ? '0' + n : String(n); }
-  function tick() {
-    var diff = CEREMONY - new Date();
-    if (diff < 0) diff = 0;
-    var s = Math.floor(diff / 1000);
-    var d = Math.floor(s / 86400);
-    var h = Math.floor((s % 86400) / 3600);
-    var m = Math.floor((s % 3600) / 60);
-    var sec = s % 60;
-    if (cdCells.days)  cdCells.days.textContent  = String(d);
-    if (cdCells.hours) cdCells.hours.textContent = pad(h);
-    if (cdCells.mins)  cdCells.mins.textContent  = pad(m);
-    if (cdCells.secs)  cdCells.secs.textContent  = pad(sec);
-  }
-  if (cdCells.days) { tick(); setInterval(tick, 1000); }
 
   /* ----------------------------------------------------------
      ANIMATED COUNTERS

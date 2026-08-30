@@ -464,27 +464,62 @@ body.locked{overflow:hidden}
 }
 .hero-gradient.lit{opacity:1}
 
-/* the red moon the whole hero is lit by */
+/* The red moon the whole hero is lit by. Craters are soft radial gradients
+   layered over the sphere body; percentages keep them scaling with its size. */
 .hero-moon{
   position:absolute;z-index:1;pointer-events:none;
-  left:50%;top:clamp(-70px,-4vh,10px);
+  left:50%;top:clamp(-90px,-6vh,0px);
   transform:translateX(-50%);
-  width:clamp(250px,38vw,540px);aspect-ratio:1;
+  width:clamp(330px,52vw,700px);aspect-ratio:1;
   border-radius:50%;
-  background:radial-gradient(circle at 40% 34%,
-    #FF6A52 0%, #EE1B22 26%, #A80812 52%, #56030A 76%, #240105 100%);
+  background:
+    radial-gradient(circle at 31% 27%, rgba(92,5,10,.62) 0%, rgba(92,5,10,.40) 3.4%, transparent 7.2%),
+    radial-gradient(circle at 63% 21%, rgba(92,5,10,.50) 0%, rgba(92,5,10,.30) 2.2%, transparent 5%),
+    radial-gradient(circle at 73% 54%, rgba(84,4,9,.58) 0%, rgba(84,4,9,.36) 4.4%, transparent 9%),
+    radial-gradient(circle at 41% 67%, rgba(92,5,10,.52) 0%, rgba(92,5,10,.32) 3%, transparent 6.4%),
+    radial-gradient(circle at 21% 51%, rgba(92,5,10,.44) 0%, rgba(92,5,10,.26) 1.8%, transparent 4.2%),
+    radial-gradient(circle at 55% 39%, rgba(104,8,13,.38) 0%, rgba(104,8,13,.22) 1.5%, transparent 3.6%),
+    radial-gradient(circle at 80% 33%, rgba(92,5,10,.40) 0%, rgba(92,5,10,.24) 1.4%, transparent 3.4%),
+    radial-gradient(circle at 47% 46%, rgba(104,8,13,.30) 0%, transparent 2.6%),
+    radial-gradient(circle at 66% 74%, rgba(84,4,9,.42) 0%, rgba(84,4,9,.24) 2.4%, transparent 5.2%),
+    radial-gradient(circle at 38% 32%,
+      #FF8A63 0%, #FA3A2A 20%, #D2131A 42%, #8E0812 64%, #4A030B 84%, #1E0105 100%);
   box-shadow:
-    inset -20px -26px 70px rgba(0,0,0,.62),
-    0 0 90px 8px rgba(229,9,20,.40),
-    0 0 240px 70px rgba(229,9,20,.22);
+    inset -22px -28px 80px rgba(0,0,0,.66),
+    inset 14px 16px 60px rgba(255,120,70,.16),
+    0 0 70px 6px rgba(229,9,20,.55),
+    0 0 160px 30px rgba(229,9,20,.38),
+    0 0 320px 90px rgba(229,9,20,.22);
+  animation:moonGlow 7s ease-in-out infinite;
 }
-/* the light it throws down over the section */
+@keyframes moonGlow{
+  0%,100%{
+    box-shadow:
+      inset -22px -28px 80px rgba(0,0,0,.66),
+      inset 14px 16px 60px rgba(255,120,70,.16),
+      0 0 70px 6px rgba(229,9,20,.50),
+      0 0 160px 30px rgba(229,9,20,.34),
+      0 0 320px 90px rgba(229,9,20,.20);
+  }
+  50%{
+    box-shadow:
+      inset -22px -28px 80px rgba(0,0,0,.66),
+      inset 14px 16px 60px rgba(255,120,70,.20),
+      0 0 90px 10px rgba(229,9,20,.68),
+      0 0 210px 46px rgba(229,9,20,.46),
+      0 0 400px 120px rgba(229,9,20,.28);
+  }
+}
+@media (prefers-reduced-motion:reduce){ .hero-moon{animation:none} }
+
+/* the light it throws across the whole section */
 .hero-moon::after{
   content:"";position:absolute;left:50%;top:50%;
   transform:translate(-50%,-50%);
-  width:340%;height:340%;border-radius:50%;
-  background:radial-gradient(circle,rgba(229,9,20,.20) 0%,rgba(139,0,0,.10) 38%,transparent 70%);
-  filter:blur(30px);
+  width:400%;height:400%;border-radius:50%;
+  background:radial-gradient(circle,
+    rgba(229,9,20,.30) 0%,rgba(180,10,18,.16) 30%,rgba(139,0,0,.08) 52%,transparent 72%);
+  filter:blur(40px);
 }
 
 /* Darkens the lower half where the copy sits and leaves the top clear,
@@ -519,20 +554,6 @@ body.locked{overflow:hidden}
 }
 .hero-actions .btn{padding:17px 34px;min-height:56px;font-size:15px}
 
-/* countdown, quiet and centred */
-.countdown{
-  display:flex;flex-wrap:wrap;justify-content:center;
-  gap:clamp(20px,4vw,58px);
-  margin-top:clamp(20px,2.4vw,28px);padding-top:clamp(16px,2vw,22px);
-  border-top:1px solid var(--stroke);
-  width:100%;max-width:640px;
-}
-.cd-cell{min-width:58px}
-.cd-num{
-  font-size:clamp(1.6rem,3vw,2.2rem);font-weight:600;letter-spacing:-.04em;
-  line-height:1;color:var(--white);font-variant-numeric:tabular-nums;
-}
-.cd-lab{font-size:11.5px;font-weight:400;color:var(--dim);margin-top:8px}
 
 /* scroll cue */
 .scroll-cue{
@@ -1101,8 +1122,6 @@ body.locked{overflow:hidden}
   .span-2{grid-column:span 1}
   .mosaic{grid-template-columns:repeat(2,1fr)}
   .card{min-height:230px}
-  .countdown{gap:16px 26px}
-  .cd-cell{min-width:52px}
   .form-foot .btn{flex:1 1 100%}
   .capsule{font-size:11.5px;padding:8px 14px;gap:8px}
 }
