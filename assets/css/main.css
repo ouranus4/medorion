@@ -344,22 +344,21 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
   height:var(--ticker-h);
   display:flex;align-items:center;
   overflow:hidden;
-  background:rgba(7,7,9,.94);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--stroke);
+  /* one solid white band across the top */
+  background:#FFFFFF;
 }
 /* soften both ends so logos fade in and out instead of getting cut */
 .ticker::before,.ticker::after{
-  content:"";position:absolute;top:0;bottom:0;width:clamp(36px,8vw,90px);
+  content:"";position:absolute;top:0;bottom:0;width:clamp(30px,6vw,72px);
   z-index:2;pointer-events:none;
 }
-.ticker::before{left:0;background:linear-gradient(90deg,#070709 20%,transparent)}
-.ticker::after{right:0;background:linear-gradient(270deg,#070709 20%,transparent)}
+.ticker::before{left:0;background:linear-gradient(90deg,#FFFFFF 18%,transparent)}
+.ticker::after{right:0;background:linear-gradient(270deg,#FFFFFF 18%,transparent)}
 
 .ticker-track{
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;gap:clamp(26px,3.4vw,46px);
   width:max-content;
-  padding-left:10px;
+  padding-left:clamp(26px,3.4vw,46px);
   animation:marquee 46s linear infinite;
   will-change:transform;
 }
@@ -368,18 +367,19 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 .tk-label{
-  flex-shrink:0;padding-right:6px;
-  font-size:11px;font-weight:600;letter-spacing:.01em;
-  color:var(--ruby);white-space:nowrap;
+  flex-shrink:0;
+  font-size:12px;font-weight:700;letter-spacing:-.01em;
+  color:#0F0F11;white-space:nowrap;
 }
+/* logos sit straight on the white band — no tiles */
 .tk{
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  height:28px;min-width:62px;padding:0 11px;
-  background:#F5F5F7;border-radius:7px;
 }
-.tk img{max-height:16px;max-width:78px;width:auto;object-fit:contain}
-.tk img.lightmark{filter:invert(1) brightness(.35)}
-.tk .wordmark{font-size:10.5px;font-weight:700;letter-spacing:-.01em;color:#15151A;white-space:nowrap}
+/* explicit height, not max-height: these SVGs carry no intrinsic size and
+   would collapse to 0x0 in a flex row without a definite cross size */
+.tk img{height:20px;width:auto;max-width:104px;object-fit:contain}
+.tk img.lightmark{filter:invert(1) brightness(.3)}
+.tk .wordmark{font-size:12px;font-weight:700;letter-spacing:-.01em;color:#0F0F11;white-space:nowrap}
 
 @media (prefers-reduced-motion:reduce){
   .ticker-track{animation:none}
