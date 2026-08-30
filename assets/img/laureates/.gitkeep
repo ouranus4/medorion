@@ -1,6 +1,14 @@
-Портрети лауреатів кладіть сюди:
+Портрети лауреатів кладіть сюди під цими іменами:
+
+  lukine.jpg
+  stefaniia-didenko.jpg
   marina-kinakh.jpg
   anna-holovko.jpg
   grand-cosmetic.jpg
   olha-samokhvalova.jpg
-Вертикальні 3:4, мінімум 600x800. Скрипт підхопить їх автоматично.
+  liliia-yurkova.jpg
+  maryna-oushen.jpg
+  inna-prystupa.jpg
+
+Вертикальні 3:4, мінімум 600x800. Скрипт підхопить файл автоматично
+і замінить монограму на фото — правити код не треба.

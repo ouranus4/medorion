@@ -19,13 +19,19 @@
   // Посилання на телесюжет СТБ. Поки порожнє — кнопка «Дивитися сюжет» прихована.
   var STB_VIDEO_URL = '';
 
-  // Instagram лауреатів. Впишіть нік БЕЗ «@» — картка стане клікабельною
-  // і на ній зʼявиться значок Instagram. Порожнє поле = картка без посилання.
+  // Instagram лауреатів. Можна вставити або повне посилання на пост,
+  // або нік без «@» — тоді відкриється профіль.
+  // Порожнє поле = картка лишається без посилання.
   var LAUREATE_INSTAGRAM = {
-    'marina-kinakh':     '',   // напр. 'marina.kinakh'
-    'anna-holovko':      '',
-    'grand-cosmetic':    '',
-    'olha-samokhvalova': ''
+    'lukine':            'https://www.instagram.com/p/DcosxTStvRo/',
+    'stefaniia-didenko': 'https://www.instagram.com/p/DcosbX_Nj4Y/',
+    'marina-kinakh':     'https://www.instagram.com/p/Dcd_y_vt8dL/',
+    'anna-holovko':      'https://www.instagram.com/p/DcJYM3VNlas/',
+    'grand-cosmetic':    'https://www.instagram.com/p/Da5edR3t_s3/',
+    'olha-samokhvalova': 'https://www.instagram.com/p/DavPuDbtTNc/',
+    'liliia-yurkova':    'https://www.instagram.com/p/DaKEyWuNh8v/',
+    'maryna-oushen':     'https://www.instagram.com/p/DZ9w1Rnt0La/',
+    'inna-prystupa':     'https://www.instagram.com/p/DZ9uPaLtVFX/'
   };
 
   // Куди вести людину, якщо мережа підвела
@@ -494,14 +500,26 @@
      card stays keyboard-focusable and reads as a real link.
      ---------------------------------------------------------- */
   $$('.lau-face[data-key]').forEach(function (face) {
-    var handle = LAUREATE_INSTAGRAM[face.getAttribute('data-key')];
-    if (!handle) return;
-    handle = String(handle).replace(/^@/, '').trim();
-    if (!handle) return;
+    var raw = LAUREATE_INSTAGRAM[face.getAttribute('data-key')];
+    if (!raw) return;
+    raw = String(raw).trim();
+    if (!raw) return;
+
+    // accept a full post/profile URL or a bare handle
+    var url, label;
+    if (/^https?:\/\//i.test(raw)) {
+      if (!/(^|\.)instagram\.com$/i.test(new URL(raw).hostname)) return;
+      url = raw;
+      label = 'Instagram';
+    } else {
+      var handle = raw.replace(/^@/, '');
+      url = 'https://www.instagram.com/' + encodeURIComponent(handle) + '/';
+      label = '@' + handle;
+    }
 
     var card = face.closest('.lau');
     if (!card) return;
-    var name = ($('.lau-name', card) || {}).textContent || '';
+    var name = (($('.lau-name', card) || {}).textContent || '').trim();
 
     // badge in the corner of the portrait
     var badge = document.createElement('span');
@@ -510,12 +528,12 @@
     badge.innerHTML = '<svg class="ic"><use href="#i-instagram"></use></svg>';
     face.appendChild(badge);
 
-    // the handle, under the role
+    // the reference, under the role
     var body = $('.lau-body', card);
     if (body) {
       var tag = document.createElement('span');
       tag.className = 'lau-handle';
-      tag.textContent = '@' + handle;
+      tag.textContent = label;
       var role = $('.lau-role', card);
       if (role && role.nextSibling) body.insertBefore(tag, role.nextSibling);
       else body.appendChild(tag);
@@ -523,10 +541,10 @@
 
     var link = document.createElement('a');
     link.className = 'lau-link';
-    link.href = 'https://www.instagram.com/' + encodeURIComponent(handle) + '/';
+    link.href = url;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.setAttribute('aria-label', name.trim() + ' — Instagram');
+    link.setAttribute('aria-label', name + ' — публікація в Instagram');
     card.appendChild(link);
     card.classList.add('has-link');
   });
