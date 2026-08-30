@@ -464,66 +464,8 @@ body.locked{overflow:hidden}
 }
 .hero-gradient.lit{opacity:1}
 
-/* The red moon the whole hero is lit by. Craters are soft radial gradients
-   layered over the sphere body; percentages keep them scaling with its size. */
-.hero-moon{
-  position:absolute;z-index:1;pointer-events:none;
-  left:50%;top:clamp(-90px,-6vh,0px);
-  transform:translateX(-50%);
-  width:clamp(330px,52vw,700px);aspect-ratio:1;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 31% 27%, rgba(92,5,10,.62) 0%, rgba(92,5,10,.40) 3.4%, transparent 7.2%),
-    radial-gradient(circle at 63% 21%, rgba(92,5,10,.50) 0%, rgba(92,5,10,.30) 2.2%, transparent 5%),
-    radial-gradient(circle at 73% 54%, rgba(84,4,9,.58) 0%, rgba(84,4,9,.36) 4.4%, transparent 9%),
-    radial-gradient(circle at 41% 67%, rgba(92,5,10,.52) 0%, rgba(92,5,10,.32) 3%, transparent 6.4%),
-    radial-gradient(circle at 21% 51%, rgba(92,5,10,.44) 0%, rgba(92,5,10,.26) 1.8%, transparent 4.2%),
-    radial-gradient(circle at 55% 39%, rgba(104,8,13,.38) 0%, rgba(104,8,13,.22) 1.5%, transparent 3.6%),
-    radial-gradient(circle at 80% 33%, rgba(92,5,10,.40) 0%, rgba(92,5,10,.24) 1.4%, transparent 3.4%),
-    radial-gradient(circle at 47% 46%, rgba(104,8,13,.30) 0%, transparent 2.6%),
-    radial-gradient(circle at 66% 74%, rgba(84,4,9,.42) 0%, rgba(84,4,9,.24) 2.4%, transparent 5.2%),
-    radial-gradient(circle at 38% 32%,
-      #FF8A63 0%, #FA3A2A 20%, #D2131A 42%, #8E0812 64%, #4A030B 84%, #1E0105 100%);
-  box-shadow:
-    inset -22px -28px 80px rgba(0,0,0,.66),
-    inset 14px 16px 60px rgba(255,120,70,.16),
-    0 0 70px 6px rgba(229,9,20,.55),
-    0 0 160px 30px rgba(229,9,20,.38),
-    0 0 320px 90px rgba(229,9,20,.22);
-  animation:moonGlow 7s ease-in-out infinite;
-}
-@keyframes moonGlow{
-  0%,100%{
-    box-shadow:
-      inset -22px -28px 80px rgba(0,0,0,.66),
-      inset 14px 16px 60px rgba(255,120,70,.16),
-      0 0 70px 6px rgba(229,9,20,.50),
-      0 0 160px 30px rgba(229,9,20,.34),
-      0 0 320px 90px rgba(229,9,20,.20);
-  }
-  50%{
-    box-shadow:
-      inset -22px -28px 80px rgba(0,0,0,.66),
-      inset 14px 16px 60px rgba(255,120,70,.20),
-      0 0 90px 10px rgba(229,9,20,.68),
-      0 0 210px 46px rgba(229,9,20,.46),
-      0 0 400px 120px rgba(229,9,20,.28);
-  }
-}
-@media (prefers-reduced-motion:reduce){ .hero-moon{animation:none} }
-
-/* the light it throws across the whole section */
-.hero-moon::after{
-  content:"";position:absolute;left:50%;top:50%;
-  transform:translate(-50%,-50%);
-  width:400%;height:400%;border-radius:50%;
-  background:radial-gradient(circle,
-    rgba(229,9,20,.30) 0%,rgba(180,10,18,.16) 30%,rgba(139,0,0,.08) 52%,transparent 72%);
-  filter:blur(40px);
-}
-
-/* Darkens the lower half where the copy sits and leaves the top clear,
-   so the moon stays visible instead of being washed out by the scrim. */
+/* Darkens the lower half where the copy sits, keeping the headline readable
+   over the moving blades of the shader. */
 .hero-scrim{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:
@@ -542,12 +484,47 @@ body.locked{overflow:hidden}
 }
 .hero .wrap{position:relative;z-index:3}
 
-.hero-inner{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,2.1vw,25px)}
-
-.hero h1{
-  max-width:19ch;
-  margin:0;
+.hero-inner{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  align-items:center;
+  gap:clamp(28px,4vw,64px);
+  text-align:left;
 }
+.hero-copy{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(16px,2vw,24px)}
+.hero-logo{margin-inline:0}
+
+.hero-sub{
+  font-size:clamp(1rem,1.35vw,1.16rem);line-height:1.55;
+  letter-spacing:-.014em;color:var(--grey);
+  max-width:34ch;margin:0;
+}
+
+/* the hosts, holding the 2026 award */
+.hero-hosts{
+  position:relative;margin:0;
+  border-radius:var(--r-card);
+  overflow:hidden;
+  border:1px solid var(--stroke);
+  background:#08080A;
+}
+.hero-hosts img{width:100%;height:auto;display:block}
+/* the shot fades into the page instead of ending on a hard edge */
+.hero-hosts::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(85% 72% at 50% 36%,transparent 42%,rgba(8,8,10,.52) 100%),
+    linear-gradient(to top,rgba(8,8,10,.94) 0%,rgba(8,8,10,.32) 26%,transparent 52%);
+}
+.hero-hosts figcaption{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  display:flex;flex-direction:column;gap:4px;
+  padding:clamp(16px,2vw,24px);
+}
+.hh-role{font-size:11.5px;font-weight:600;color:var(--ruby)}
+.hh-name{font-size:clamp(1rem,1.5vw,1.24rem);font-weight:600;letter-spacing:-.025em;color:var(--white)}
+
+.hero h1{max-width:15ch;margin:0}
 .hero-actions{
   display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
   gap:14px;margin-top:6px;
@@ -819,7 +796,28 @@ body.locked{overflow:hidden}
 /* ============================================================
    HOSTS
    ============================================================ */
-.hosts{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(12px,1.4vw,16px)}
+.evening-split{
+  display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(14px,1.8vw,22px);align-items:stretch;
+}
+.evening-photo{
+  position:relative;margin:0;overflow:hidden;
+  border-radius:var(--r-card);
+  border:1px solid var(--stroke);
+  background:#08080A;
+}
+.evening-photo img{width:100%;height:100%;object-fit:cover;object-position:center 26%;display:block}
+.evening-photo::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top,rgba(8,8,10,.94) 0%,rgba(8,8,10,.30) 28%,transparent 54%);
+}
+.evening-photo figcaption{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  display:flex;flex-direction:column;gap:4px;
+  padding:clamp(16px,2vw,24px);
+}
+
+.hosts{display:grid;grid-template-rows:1fr 1fr;gap:clamp(12px,1.4vw,16px)}
 .host{
   padding:clamp(24px,2.8vw,38px);
   background:var(--glass);border:1px solid var(--stroke);
@@ -1073,6 +1071,11 @@ body.locked{overflow:hidden}
 }
 
 @media (max-width:960px){
+  .hero-inner{grid-template-columns:1fr;gap:clamp(24px,4vw,36px)}
+  .hero-copy{align-items:center;text-align:center}
+  .hero h1{max-width:18ch}
+  .hero-sub{max-width:44ch}
+  .hero-hosts{max-width:min(86%,430px);margin-inline:auto}
   .nav-links{display:none}
   .nav-cta .btn{display:none}
   .burger{display:flex}
@@ -1087,7 +1090,9 @@ body.locked{overflow:hidden}
   .bento-report{grid-template-columns:repeat(2,1fr)}
   .mosaic{grid-template-columns:repeat(3,1fr)}
   .media-note{grid-template-columns:1fr}
-  .hosts{grid-template-columns:1fr}
+  .evening-split{grid-template-columns:1fr}
+  .evening-photo{aspect-ratio:4/3}
+  .hosts{grid-template-rows:auto auto}
 }
 
 @media (max-width:700px){
