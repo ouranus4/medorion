@@ -97,7 +97,7 @@ h1,h2,h3,h4{
 /* the vw term has to carry small screens too — a high rem floor clips
    long Ukrainian compounds like "beauty-індустрії" on a 375px phone */
 h1{
-  font-size:clamp(1.95rem,8.2vw,5rem);
+  font-size:clamp(1.95rem,5.4vw,3.4rem);
   line-height:1.07;font-weight:700;
   overflow-wrap:break-word;
 }
@@ -451,7 +451,7 @@ body.locked{overflow:hidden}
   min-height:calc(100svh - var(--ticker-h));
   display:flex;align-items:center;justify-content:center;
   text-align:center;
-  padding-block:clamp(94px,11vh,118px) clamp(44px,5vh,66px);
+  padding-block:clamp(74px,9vh,100px) clamp(28px,3.4vh,46px);
   background:var(--black);
 }
 /* animated ruby gradient (WebGL) — silky blades of light on black */
@@ -486,14 +486,8 @@ body.locked{overflow:hidden}
 
 /* Stacked, centred: info and logo on top, the hosts in the middle,
    the call to action underneath. */
-.hero-inner{display:flex;flex-direction:column;align-items:center;gap:clamp(14px,1.8vw,22px)}
+.hero-inner{display:flex;flex-direction:column;align-items:center;gap:clamp(10px,1.3vw,17px)}
 .hero-copy{display:contents}
-
-.hero-sub{
-  font-size:clamp(1rem,1.35vw,1.16rem);line-height:1.55;
-  letter-spacing:-.014em;color:var(--grey);
-  max-width:34ch;margin:0;
-}
 
 /* the hosts, cut out, standing on the page itself */
 .hero-hosts{
@@ -502,7 +496,10 @@ body.locked{overflow:hidden}
   margin-top:clamp(-6px,-1vw,0px);
 }
 .hero-hosts img{
-  width:100%;height:auto;display:block;
+  width:auto;max-width:100%;
+  /* capped against the viewport so the CTA stays above the fold */
+  max-height:clamp(250px,36vh,420px);
+  height:auto;display:block;margin-inline:auto;
   filter:drop-shadow(0 30px 60px rgba(0,0,0,.75));
 }
 /* glass name plates beside each host */
@@ -517,12 +514,13 @@ body.locked{overflow:hidden}
   white-space:nowrap;
   text-align:left;
 }
-.hh-left {left:clamp(-14px,-2%,0px);  top:44%}
-.hh-right{right:clamp(-14px,-2%,0px); top:26%}
+/* kept low enough to sit over the jackets, never across a face */
+.hh-left {left:clamp(-14px,-2%,0px);  top:64%}
+.hh-right{right:clamp(-14px,-2%,0px); top:53%}
 .hh-name{font-size:clamp(.84rem,1.15vw,.98rem);font-weight:600;letter-spacing:-.02em;color:var(--white)}
 .hh-role{font-size:10.5px;font-weight:500;color:var(--ruby)}
 
-.hero h1{max-width:15ch;margin:0}
+.hero h1{max-width:24ch;margin:0}
 .hero-actions{
   display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
   gap:14px;margin-top:6px;
@@ -544,7 +542,7 @@ body.locked{overflow:hidden}
 /* ---------- hero wordmark: silver logo with a metallic sheen ---------- */
 .hero-logo{
   position:relative;
-  width:min(76%,440px);
+  width:min(56%,320px);
   margin-inline:auto;
 }
 /* ruby bloom sitting behind the mark */
@@ -1070,8 +1068,7 @@ body.locked{overflow:hidden}
   .hero-inner{grid-template-columns:1fr;gap:clamp(24px,4vw,36px)}
   .hero-copy{align-items:center;text-align:center}
   .hero h1{max-width:18ch}
-  .hero-sub{max-width:44ch}
-  .hero-hosts{max-width:min(86%,430px);margin-inline:auto}
+  .hero-hosts{max-width:min(100%,520px);margin-inline:auto}
   .nav-links{display:none}
   .nav-cta .btn{display:none}
   .burger{display:flex}
@@ -1092,6 +1089,18 @@ body.locked{overflow:hidden}
 }
 
 @media (max-width:700px){
+  /* phone hero: small logo, big hosts, compact headline, button close under */
+  .hero-logo{width:min(38%,190px)}
+  .hero-hosts{max-width:100%;width:100%;margin-top:-6px}
+  .hero-inner{gap:10px}
+  .hero h1{font-size:clamp(1.6rem,6.6vw,2.2rem);max-width:22ch}
+  .hero-actions{margin-top:-6px}
+  .hh-tag{padding:7px 11px;border-radius:11px}
+  .hh-name{font-size:.8rem}
+  .hh-role{font-size:9.5px}
+  .hh-left {left:-6px; top:66%}
+  .hh-right{right:-6px; top:55%}
+
   .sticky-cta{display:block}
   .scroll-cue{display:none}
   /* the arrow is hidden here, but the number and icon still need their own
