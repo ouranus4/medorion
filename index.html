@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/main.css?v=20260830h">
+<link rel="stylesheet" href="assets/css/main.css?v=20260830k">
 
 <script type="application/ld+json">
 {
@@ -215,6 +215,7 @@
 <!-- ============ 1. HERO — centred, typography only ============ -->
 <section class="hero" id="top">
   <canvas class="hero-gradient" id="heroGradient" aria-hidden="true"></canvas>
+  <div class="hero-moon" aria-hidden="true"></div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="wrap">
     <div class="hero-inner">
@@ -377,25 +378,40 @@
     </div>
 
     <div class="mosaic">
-      <figure class="rv"><img src="assets/img/gallery/17.jpg" alt="Червона доріжка MedOrion Awards" loading="lazy" decoding="async" width="340" height="211"></figure>
-      <figure class="rv d1"><img src="assets/img/gallery/20.jpg" alt="Сцена церемонії нагородження" loading="lazy" decoding="async" width="340" height="211"></figure>
-      <figure class="rv d2"><img src="assets/img/gallery/21.jpg" alt="Гості церемонії" loading="lazy" decoding="async" width="332" height="207"></figure>
-      <figure class="rv d3"><img src="assets/img/gallery/22.jpg" alt="Концертна програма — білий рояль" loading="lazy" decoding="async" width="332" height="211"></figure>
-      <figure class="rv d4"><img src="assets/img/gallery/24.jpg" alt="Сцена церемонії MedOrion Awards" loading="lazy" decoding="async" width="340" height="211"></figure>
-      <figure class="rv d5"><img src="assets/img/gallery/03.jpg" alt="Червона доріжка" loading="lazy" decoding="async" width="340" height="207"></figure>
-      <figure class="rv"><img src="assets/img/gallery/26.jpg" alt="Гості на червоній доріжці" loading="lazy" decoding="async" width="211" height="171"></figure>
-      <figure class="rv d1"><img src="assets/img/gallery/13.jpg" alt="Гості гала-вечері" loading="lazy" decoding="async" width="213" height="165"></figure>
-      <figure class="rv d2"><img src="assets/img/gallery/09.jpg" alt="Вручення дипломів" loading="lazy" decoding="async" width="211" height="160"></figure>
-      <figure class="rv d3"><img src="assets/img/gallery/06.jpg" alt="Лауреатка на сцені" loading="lazy" decoding="async" width="213" height="171"></figure>
-      <figure class="rv d4"><img src="assets/img/gallery/11.jpg" alt="Концертна програма" loading="lazy" decoding="async" width="332" height="211"></figure>
-      <figure class="rv d5"><img src="assets/img/gallery/16.jpg" alt="Нагородження клініки" loading="lazy" decoding="async" width="211" height="165"></figure>
-      <figure class="rv"><img src="assets/img/gallery/18.jpg" alt="Інтерв'ю гостей у телеефірі" loading="lazy" decoding="async" width="315" height="207"></figure>
-      <figure class="rv d1"><img src="assets/img/gallery/19.jpg" alt="Репортаж з церемонії" loading="lazy" decoding="async" width="315" height="211"></figure>
-      <figure class="rv d2"><img src="assets/img/gallery/01.jpg" alt="Церемонія MedOrion Awards" loading="lazy" decoding="async" width="211" height="160"></figure>
-      <figure class="rv d3"><img src="assets/img/gallery/04.jpg" alt="Нагородження" loading="lazy" decoding="async" width="211" height="171"></figure>
-      <figure class="rv d4"><img src="assets/img/gallery/10.jpg" alt="Лауреати премії" loading="lazy" decoding="async" width="210" height="171"></figure>
-      <figure class="rv d5"><img src="assets/img/gallery/25.jpg" alt="Концертна програма" loading="lazy" decoding="async" width="332" height="211"></figure>
+      <figure class="rv"><img src="assets/img/gallery/01.jpg" alt="Гості церемонії MedOrion Awards 2025" loading="lazy" decoding="async" width="1152" height="768"></figure>
+      <figure class="rv d1"><img src="assets/img/gallery/02.jpg" alt="Лауреати біля брендволу премії" loading="lazy" decoding="async" width="1200" height="800"></figure>
+      <figure class="rv d2"><img src="assets/img/gallery/03.jpg" alt="Лауреатка з відзнакою MedOrion Awards" loading="lazy" decoding="async" width="1179" height="1572"></figure>
+      <figure class="rv d3"><img src="assets/img/gallery/04.jpg" alt="Гості на червоній доріжці" loading="lazy" decoding="async" width="1152" height="768"></figure>
+      <figure class="rv d4"><img src="assets/img/gallery/05.jpg" alt="Лауреатки зі статуетками премії" loading="lazy" decoding="async" width="853" height="568"></figure>
+      <figure class="rv d5"><img src="assets/img/gallery/06.jpg" alt="Церемонія MedOrion Awards 2025" loading="lazy" decoding="async" width="1152" height="768"></figure>
+      <figure class="rv"><img src="assets/img/gallery/07.jpg" alt="Гості вечора у Fairmont" loading="lazy" decoding="async" width="1152" height="768"></figure>
+      <figure class="rv d1"><img src="assets/img/gallery/08.jpg" alt="Нагородження лауреатів" loading="lazy" decoding="async" width="1200" height="800"></figure>
+      <figure class="rv d2"><img src="assets/img/gallery/09.jpg" alt="Брендвол церемонії" loading="lazy" decoding="async" width="1200" height="800"></figure>
+      <figure class="rv d3"><img src="assets/img/gallery/10.jpg" alt="Лауреатка премії зі статуеткою" loading="lazy" decoding="async" width="960" height="1280"></figure>
+      <figure class="rv d4"><img src="assets/img/gallery/11.jpg" alt="Гості премії на червоній доріжці" loading="lazy" decoding="async" width="1200" height="800"></figure>
+      <figure class="rv d5"><img src="assets/img/gallery/12.jpg" alt="Ольга Сумська з гостями церемонії" loading="lazy" decoding="async" width="1200" height="1800"></figure>
+      <figure class="rv"><img src="assets/img/gallery/13.jpg" alt="Лауреати біля брендволу" loading="lazy" decoding="async" width="1200" height="1800"></figure>
+      <figure class="rv d1"><img src="assets/img/gallery/14.jpg" alt="Лауреатка зі статуеткою MedOrion" loading="lazy" decoding="async" width="1200" height="800"></figure>
+      <figure class="rv d2"><img src="assets/img/gallery/15.jpg" alt="Гості церемонії" loading="lazy" decoding="async" width="1200" height="800"></figure>
+      <figure class="rv d3"><img src="assets/img/gallery/16.jpg" alt="Лауреатки з відзнаками та статуетками" loading="lazy" decoding="async" width="1200" height="1800"></figure>
     </div>
+    <div class="video-block rv">
+      <div class="video-head">
+        <span class="card-tag">Новий канал · «Варто знати»</span>
+        <h3>Сюжет про премію в ефірі Нового каналу</h3>
+      </div>
+      <div class="video-frame">
+        <video controls preload="none"
+               poster="assets/video/novyi-kanal-poster.jpg"
+               playsinline
+               width="1280" height="720">
+          <source src="assets/video/novyi-kanal.mp4" type="video/mp4">
+          Ваш браузер не підтримує відтворення відео.
+          <a href="assets/video/novyi-kanal.mp4">Завантажити сюжет</a>
+        </video>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -903,6 +919,6 @@
   </div>
 </div>
 
-<script src="assets/js/main.js?v=20260830h"></script>
+<script src="assets/js/main.js?v=20260830k"></script>
 </body>
 </html>

@@ -154,10 +154,8 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 /* ---------- buttons ---------- */
 .btn{
   position:relative;
-  /* isolate + a negative-z canvas puts the starfield above the fill
-     but behind the label, without wrapping the label in an element.
-     No overflow:hidden here — the halo has to bleed past the edge, so the
-     canvas rounds off its own corners instead. */
+  /* isolate keeps the negative-z halo inside this button's stacking context.
+     No overflow:hidden — the halo has to bleed past the edge. */
   isolation:isolate;
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
   min-height:52px;padding:15px 30px;
@@ -169,10 +167,9 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
              transform .35s var(--ease);
 }
 /* ---------- star button ----------
-   A dark pill carrying a hairline ring, a light arc that travels around
-   the perimeter, and a drifting starfield inside.
-   The travelling arc is a conic gradient whose angle is animated; masking
-   it to the padding box leaves only the 1px ring visible.
+   A dark pill carrying a hairline ring and a light arc that travels around
+   the perimeter. The arc is a conic gradient whose angle is animated;
+   masking it to the padding box leaves only the 1px ring visible.
 ------------------------------------ */
 @property --star-a{ syntax:"<angle>"; initial-value:0deg; inherits:false; }
 
@@ -231,16 +228,6 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
   .btn::after{opacity:.35}
 }
 
-/* starfield painted inside every button */
-.btn-sparks{
-  position:absolute;inset:0;z-index:-1;
-  width:100%;height:100%;
-  border-radius:inherit;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .7s var(--ease);
-}
-.btn-sparks.lit{opacity:1}
 
 /* ---------- frosted graphite card ---------- */
 .card{
@@ -476,12 +463,41 @@ body.locked{overflow:hidden}
   transition:opacity 1.2s var(--ease);
 }
 .hero-gradient.lit{opacity:1}
-/* keeps the headline readable where the blades are brightest */
+
+/* the red moon the whole hero is lit by */
+.hero-moon{
+  position:absolute;z-index:1;pointer-events:none;
+  left:50%;top:clamp(-70px,-4vh,10px);
+  transform:translateX(-50%);
+  width:clamp(250px,38vw,540px);aspect-ratio:1;
+  border-radius:50%;
+  background:radial-gradient(circle at 40% 34%,
+    #FF6A52 0%, #EE1B22 26%, #A80812 52%, #56030A 76%, #240105 100%);
+  box-shadow:
+    inset -20px -26px 70px rgba(0,0,0,.62),
+    0 0 90px 8px rgba(229,9,20,.40),
+    0 0 240px 70px rgba(229,9,20,.22);
+}
+/* the light it throws down over the section */
+.hero-moon::after{
+  content:"";position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:340%;height:340%;border-radius:50%;
+  background:radial-gradient(circle,rgba(229,9,20,.20) 0%,rgba(139,0,0,.10) 38%,transparent 70%);
+  filter:blur(30px);
+}
+
+/* Darkens the lower half where the copy sits and leaves the top clear,
+   so the moon stays visible instead of being washed out by the scrim. */
 .hero-scrim{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
+  position:absolute;inset:0;z-index:2;pointer-events:none;
   background:
-    radial-gradient(120% 90% at 50% 52%,rgba(0,0,0,.72) 0%,rgba(0,0,0,.42) 46%,transparent 78%),
-    linear-gradient(to bottom,rgba(0,0,0,.55) 0%,transparent 26%);
+    radial-gradient(130% 78% at 50% 88%,rgba(0,0,0,.82) 0%,rgba(0,0,0,.52) 44%,transparent 76%),
+    linear-gradient(to bottom,
+      rgba(0,0,0,.42) 0%,
+      rgba(0,0,0,.10) 18%,
+      rgba(0,0,0,.28) 44%,
+      rgba(0,0,0,.68) 100%);
 }
 /* the ground fades back to page black at the bottom */
 .hero::after{
@@ -489,7 +505,7 @@ body.locked{overflow:hidden}
   background:linear-gradient(to bottom,transparent,var(--bg));
   pointer-events:none;
 }
-.hero .wrap{position:relative;z-index:2}
+.hero .wrap{position:relative;z-index:3}
 
 .hero-inner{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,2.1vw,25px)}
 
@@ -628,6 +644,34 @@ body.locked{overflow:hidden}
 .stat-lab{margin-top:12px;font-size:13.5px;color:var(--grey);line-height:1.5}
 
 
+/* broadcast video */
+.video-block{
+  margin-top:clamp(14px,1.6vw,20px);
+  padding:clamp(18px,2.2vw,26px);
+  background:var(--glass);
+  border:1px solid var(--stroke);
+  border-radius:var(--r-card);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.video-head{
+  display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;
+  margin-bottom:clamp(14px,1.6vw,18px);
+}
+.video-head h3{margin:0}
+.video-frame{
+  position:relative;overflow:hidden;
+  border-radius:clamp(14px,1.6vw,18px);
+  border:1px solid var(--stroke);
+  background:#000;
+  aspect-ratio:16/9;
+}
+.video-frame video{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+
 /* photo mosaic */
 .mosaic{
   display:grid;grid-template-columns:repeat(6,1fr);
@@ -640,10 +684,9 @@ body.locked{overflow:hidden}
 }
 .mosaic img{
   width:100%;height:100%;object-fit:cover;
-  filter:grayscale(1) brightness(.86);
-  transition:transform .9s var(--ease),filter .6s var(--ease);
+  transition:transform .9s var(--ease);
 }
-.mosaic figure:hover img{transform:scale(1.06);filter:grayscale(0) brightness(1)}
+.mosaic figure:hover img{transform:scale(1.06)}
 
 /* ============================================================
    LAUREATES
@@ -1070,6 +1113,6 @@ body.locked{overflow:hidden}
     transform:none;box-shadow:none;background:var(--glass);border-color:var(--stroke);
   }
   .card:hover::before{opacity:0}
-  .mosaic figure:hover img{transform:none;filter:grayscale(1) brightness(.86)}
+  .mosaic figure:hover img{transform:none}
   .chip img{opacity:.8}
 }
