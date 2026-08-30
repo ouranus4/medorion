@@ -49,27 +49,38 @@
 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <symbol id="i-droplet" viewBox="0 0 24 24">
-      <path d="M12 3.2s6.2 6.6 6.2 10.2a6.2 6.2 0 1 1-12.4 0C5.8 9.8 12 3.2 12 3.2z"/>
-      <path d="M9.6 14.2a2.6 2.6 0 0 0 2.6 2.6"/>
+    <!-- шприц: вертикальний, з фланцем і поршнем - читається однозначно -->
+    <symbol id="i-syringe" viewBox="0 0 24 24">
+      <path d="M12 2.2v3.2"/>
+      <path d="M8.8 5.4h6.4"/>
+      <path d="M9.8 5.4h4.4v10.2a1 1 0 0 1-1 1h-2.4a1 1 0 0 1-1-1z"/>
+      <path d="M10.9 8.2h2.2M10.9 10.4h2.2M10.9 12.6h2.2"/>
+      <path d="M12 16.6v5.2"/>
     </symbol>
-    <symbol id="i-sparkle" viewBox="0 0 24 24">
-      <path d="M12 2.6l2 6.4 6.4 2-6.4 2-2 6.4-2-6.4-6.4-2 6.4-2z"/>
-      <path d="M18.6 3.2l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7z"/>
-    </symbol>
+    <!-- скальпель: горизонтальна ручка + скошене лезо -->
     <symbol id="i-scalpel" viewBox="0 0 24 24">
-      <path d="M3.2 20.8l5.4-5.4"/>
-      <path d="M8.6 15.4l9-9a2.4 2.4 0 0 1 3.4 3.4l-9 9z"/>
-      <path d="M14.4 9.6l3.4 3.4"/>
+      <rect x="2.6" y="14.4" width="8.6" height="3.2" rx="1.6"/>
+      <path d="M11.2 14.4l7.7-6.6a1.9 1.9 0 0 1 2.6 2.7l-6.5 7.1h-3.8z"/>
     </symbol>
+    <!-- клініка: широка будівля, хрест і вхід -->
     <symbol id="i-clinic" viewBox="0 0 24 24">
-      <path d="M2.8 21h18.4"/>
-      <path d="M5 21V7.4L12 4l7 3.4V21"/>
-      <path d="M12 9.6v5M9.5 12.1h5"/>
+      <path d="M2.6 21.2h18.8"/>
+      <path d="M4.8 21.2V7.4h14.4v13.8"/>
+      <path d="M12 9.8v4.4M9.8 12h4.4"/>
+      <path d="M10.3 21.2v-4.4h3.4v4.4"/>
     </symbol>
-    <symbol id="i-tag" viewBox="0 0 24 24">
-      <path d="M3.4 12.4V4.6a1.2 1.2 0 0 1 1.2-1.2h7.8a1.2 1.2 0 0 1 .85.35l7.2 7.2a1.2 1.2 0 0 1 0 1.7l-7.8 7.8a1.2 1.2 0 0 1-1.7 0l-7.2-7.2a1.2 1.2 0 0 1-.35-.85z"/>
-      <circle cx="8.1" cy="8.1" r="1.5"/>
+    <!-- флакон сироватки: beauty-індустрія -->
+    <symbol id="i-serum" viewBox="0 0 24 24">
+      <path d="M9.4 2.6h5.2"/>
+      <path d="M10.4 2.6v3.4M13.6 2.6v3.4"/>
+      <path d="M8.6 21.4a1.8 1.8 0 0 1-1.8-1.8V9.8A3.8 3.8 0 0 1 10.6 6h2.8a3.8 3.8 0 0 1 3.8 3.8v9.8a1.8 1.8 0 0 1-1.8 1.8z"/>
+      <path d="M9.6 12.6h4.8"/>
+    </symbol>
+    <!-- коробка: дистрибуція -->
+    <symbol id="i-package" viewBox="0 0 24 24">
+      <path d="M12 2.6l8.4 4.4v10L12 21.4 3.6 17V7z"/>
+      <path d="M3.6 7L12 11.4 20.4 7"/>
+      <path d="M12 11.4v10"/>
     </symbol>
     <symbol id="i-users" viewBox="0 0 24 24">
       <circle cx="9" cy="7.8" r="3.4"/>
@@ -99,15 +110,14 @@
       <path d="M5.6 11.4a6.4 6.4 0 0 0 12.8 0"/>
       <path d="M12 17.8v3.6"/>
     </symbol>
-    <symbol id="i-growth" viewBox="0 0 24 24">
-      <path d="M3 17.4l5.4-5.4 3.6 3.6 8-8"/>
-      <path d="M15.4 7.6H20v4.6"/>
-      <path d="M3 21h18"/>
+    <!-- пульс: інноваційне зростання з медичним акцентом -->
+    <symbol id="i-pulse" viewBox="0 0 24 24">
+      <path d="M2.6 12.6h4.2l2-5.4 3.4 9.6 2.2-4.2h6.9"/>
     </symbol>
-    <symbol id="i-chip" viewBox="0 0 24 24">
-      <rect x="7.2" y="7.2" width="9.6" height="9.6" rx="1.8"/>
-      <path d="M10.2 3.2v4M13.8 3.2v4M10.2 16.8v4M13.8 16.8v4"/>
-      <path d="M3.2 10.2h4M3.2 13.8h4M16.8 10.2h4M16.8 13.8h4"/>
+    <symbol id="i-dna" viewBox="0 0 24 24">
+      <path d="M7 2.6c0 5 10 6.4 10 11.4S7 21.4 7 21.4"/>
+      <path d="M17 2.6c0 5-10 6.4-10 11.4s10 5.4 10 5.4"/>
+      <path d="M8.4 6.2h7.2M7.2 9.8h9.6M7.2 14.2h9.6M8.4 17.8h7.2"/>
     </symbol>
     <symbol id="i-coins" viewBox="0 0 24 24">
       <ellipse cx="12" cy="6.4" rx="7.2" ry="3.1"/>
@@ -242,7 +252,7 @@
     <div class="bento-4">
       <article class="card rv">
         <div class="card-top">
-          <span class="card-icon"><svg class="ic"><use href="#i-droplet"></use></svg></span>
+          <span class="card-icon"><svg class="ic"><use href="#i-syringe"></use></svg></span>
           <span class="card-tag">Косметологія</span>
         </div>
         <div class="card-body">
@@ -278,7 +288,7 @@
 
       <article class="card rv d3">
         <div class="card-top">
-          <span class="card-icon"><svg class="ic"><use href="#i-tag"></use></svg></span>
+          <span class="card-icon"><svg class="ic"><use href="#i-package"></use></svg></span>
           <span class="card-tag">Бренди</span>
         </div>
         <div class="card-body">
@@ -429,7 +439,6 @@
       </article>
     </div>
 
-    <p class="scroll-hint">Гортайте вбік →</p>
   </div>
 </section>
 
@@ -448,9 +457,9 @@
     <div class="channels">
       <div class="chip rv"><img src="assets/img/channels/1plus1.png" alt="1+1" loading="lazy" width="738" height="246"></div>
       <div class="chip rv"><img src="assets/img/channels/ictv2.webp" alt="ICTV2" loading="lazy"></div>
-      <div class="chip rv"><img class="keep" src="assets/img/channels/stb.png" alt="СТБ" loading="lazy" width="258" height="292"></div>
-      <div class="chip rv"><img class="keep" src="assets/img/channels/novy.png" alt="Новий канал" loading="lazy" width="265" height="265"></div>
-      <div class="chip rv"><img class="keep" src="assets/img/channels/pryamiy.svg" alt="Прямий" loading="lazy"></div>
+      <div class="chip rv"><img src="assets/img/channels/stb.png" alt="СТБ" loading="lazy" width="258" height="292"></div>
+      <div class="chip rv"><img src="assets/img/channels/novy.png" alt="Новий канал" loading="lazy" width="265" height="265"></div>
+      <div class="chip rv"><img class="lightmark" src="assets/img/channels/pryamiy.svg" alt="Прямий" loading="lazy"></div>
       <div class="chip rv d1"><img src="assets/img/channels/dim.svg" alt="Телеканал ДІМ" loading="lazy"></div>
       <div class="chip rv d1"><img src="assets/img/channels/my-ukraina.svg" alt="Ми — Україна" loading="lazy"></div>
       <div class="chip rv d1"><img src="assets/img/channels/5channel.svg" alt="5 канал" loading="lazy"></div>
@@ -458,12 +467,11 @@
       <div class="chip rv d1"><img src="assets/img/channels/oboz.png" alt="OBOZ.UA" loading="lazy" width="539" height="155"></div>
       <div class="chip rv d2"><img src="assets/img/channels/truha.png" alt="Труха Україна" loading="lazy" width="223" height="223"></div>
       <div class="chip rv d2"><img src="assets/img/channels/avtoradio.png" alt="Авторадіо" loading="lazy" width="1763" height="595"></div>
-      <div class="chip rv d2"><img class="keep" src="assets/img/channels/radio-pyatnitsa.png" alt="Радіо П'ятниця" loading="lazy" width="364" height="311"></div>
+      <div class="chip rv d2"><img src="assets/img/channels/radio-pyatnitsa.png" alt="Радіо П'ятниця" loading="lazy" width="364" height="311"></div>
       <div class="chip rv d2"><span class="wordmark">33 канал</span></div>
       <div class="chip rv d2"><span class="wordmark">Радіо</span></div>
     </div>
 
-    <p class="scroll-hint">Гортайте вбік →</p>
 
     <div class="media-note">
       <article class="card rv">
@@ -545,13 +553,13 @@
     <div class="noms">
       <a class="nom rv" href="#apply">
         <span class="nom-idx">01</span>
-        <span class="nom-icon"><svg class="ic"><use href="#i-droplet"></use></svg></span>
+        <span class="nom-icon"><svg class="ic"><use href="#i-syringe"></use></svg></span>
         <span class="nom-title">Естетична медицина</span>
         <svg class="nom-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <a class="nom rv" href="#apply">
         <span class="nom-idx">02</span>
-        <span class="nom-icon"><svg class="ic"><use href="#i-sparkle"></use></svg></span>
+        <span class="nom-icon"><svg class="ic"><use href="#i-serum"></use></svg></span>
         <span class="nom-title">Beauty-індустрія</span>
         <svg class="nom-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
@@ -569,13 +577,13 @@
       </a>
       <a class="nom rv" href="#apply">
         <span class="nom-idx">05</span>
-        <span class="nom-icon"><svg class="ic"><use href="#i-growth"></use></svg></span>
+        <span class="nom-icon"><svg class="ic"><use href="#i-pulse"></use></svg></span>
         <span class="nom-title">Інноваційний бізнес</span>
         <svg class="nom-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <a class="nom rv" href="#apply">
         <span class="nom-idx">06</span>
-        <span class="nom-icon"><svg class="ic"><use href="#i-chip"></use></svg></span>
+        <span class="nom-icon"><svg class="ic"><use href="#i-dna"></use></svg></span>
         <span class="nom-title">Нові технології</span>
         <svg class="nom-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
