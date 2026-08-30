@@ -716,6 +716,31 @@ body.locked{overflow:hidden}
   font-size:10.5px;font-weight:500;color:var(--graphite);
 }
 
+/* ---- Instagram link on a laureate card ---- */
+.lau{position:relative}
+/* stretched overlay: the whole card is the link, but the markup stays flat */
+.lau-link{position:absolute;inset:0;z-index:3;border-radius:inherit}
+.lau.has-link{cursor:pointer}
+.lau-ig{
+  position:absolute;z-index:2;right:10px;top:10px;
+  display:flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(10,10,12,.62);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  color:#fff;
+  transition:background .4s var(--ease),border-color .4s var(--ease),color .4s var(--ease);
+}
+.lau-ig .ic{width:16px;height:16px}
+.lau.has-link:hover .lau-ig{
+  background:var(--ruby);border-color:var(--ruby);color:#fff;
+  box-shadow:0 0 18px rgba(229,9,20,.55);
+}
+.lau-handle{
+  font-size:12px;font-weight:500;color:var(--ruby);
+  letter-spacing:-.01em;
+}
+
 /* ============================================================
    MEDIA
    ============================================================ */

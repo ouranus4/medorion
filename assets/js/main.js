@@ -19,6 +19,15 @@
   // Посилання на телесюжет СТБ. Поки порожнє — кнопка «Дивитися сюжет» прихована.
   var STB_VIDEO_URL = '';
 
+  // Instagram лауреатів. Впишіть нік БЕЗ «@» — картка стане клікабельною
+  // і на ній зʼявиться значок Instagram. Порожнє поле = картка без посилання.
+  var LAUREATE_INSTAGRAM = {
+    'marina-kinakh':     '',   // напр. 'marina.kinakh'
+    'anna-holovko':      '',
+    'grand-cosmetic':    '',
+    'olha-samokhvalova': ''
+  };
+
   // Куди вести людину, якщо мережа підвела
   var TG_FALLBACK = 'https://t.me/marina_philipenko';
 
@@ -476,6 +485,50 @@
       if (mono) mono.style.display = 'none';
     };
     probe.src = src;
+  });
+
+  /* ----------------------------------------------------------
+     LAUREATE INSTAGRAM LINKS
+     A handle in LAUREATE_INSTAGRAM turns the whole card into a link.
+     Uses a stretched <a> overlay rather than a click handler, so the
+     card stays keyboard-focusable and reads as a real link.
+     ---------------------------------------------------------- */
+  $$('.lau-face[data-key]').forEach(function (face) {
+    var handle = LAUREATE_INSTAGRAM[face.getAttribute('data-key')];
+    if (!handle) return;
+    handle = String(handle).replace(/^@/, '').trim();
+    if (!handle) return;
+
+    var card = face.closest('.lau');
+    if (!card) return;
+    var name = ($('.lau-name', card) || {}).textContent || '';
+
+    // badge in the corner of the portrait
+    var badge = document.createElement('span');
+    badge.className = 'lau-ig';
+    badge.setAttribute('aria-hidden', 'true');
+    badge.innerHTML = '<svg class="ic"><use href="#i-instagram"></use></svg>';
+    face.appendChild(badge);
+
+    // the handle, under the role
+    var body = $('.lau-body', card);
+    if (body) {
+      var tag = document.createElement('span');
+      tag.className = 'lau-handle';
+      tag.textContent = '@' + handle;
+      var role = $('.lau-role', card);
+      if (role && role.nextSibling) body.insertBefore(tag, role.nextSibling);
+      else body.appendChild(tag);
+    }
+
+    var link = document.createElement('a');
+    link.className = 'lau-link';
+    link.href = 'https://www.instagram.com/' + encodeURIComponent(handle) + '/';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', name.trim() + ' — Instagram');
+    card.appendChild(link);
+    card.classList.add('has-link');
   });
 
   /* ----------------------------------------------------------
