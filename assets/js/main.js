@@ -16,8 +16,6 @@
   var TG_BOT_TOKEN = '';   // напр. '7712345678:AAG...'
   var TG_CHAT_ID   = '';   // напр. '-1002345678901' або '123456789'
 
-  // Посилання на телесюжет СТБ. Поки порожнє — кнопка «Дивитися сюжет» прихована.
-  var STB_VIDEO_URL = '';
 
   // Instagram лауреатів. Можна вставити або повне посилання на пост,
   // або нік без «@» — тоді відкриється профіль.
@@ -548,17 +546,6 @@
     card.appendChild(link);
     card.classList.add('has-link');
   });
-
-  /* ----------------------------------------------------------
-     STB BROADCAST LINK
-     ---------------------------------------------------------- */
-  var stbLink = $('#stbLink');
-  if (stbLink && STB_VIDEO_URL) {
-    stbLink.href = STB_VIDEO_URL;
-    stbLink.target = '_blank';
-    stbLink.rel = 'noopener';
-    stbLink.hidden = false;
-  }
 
   /* ----------------------------------------------------------
      MODAL
