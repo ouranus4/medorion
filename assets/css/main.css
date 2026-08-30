@@ -143,6 +143,8 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
   line-height:1.4;
 }
 .capsule .sep{width:3px;height:3px;border-radius:50%;background:var(--ruby);flex-shrink:0}
+/* the venue name has a shorter twin that only phones use */
+.cap-short{display:none}
 .capsule .dot{
   width:6px;height:6px;border-radius:50%;background:var(--ruby);flex-shrink:0;
   box-shadow:0 0 10px rgba(229,9,20,.9);
@@ -807,41 +809,57 @@ body.locked{overflow:hidden}
 /* ============================================================
    HOSTS
    ============================================================ */
-.evening-split{
-  display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
-  gap:clamp(14px,1.8vw,22px);align-items:stretch;
+.evening-split{display:block}
+/* ---------- ruby-sky stage ----------
+   The hero treatment, reused mid-page: a figure cut out and standing on the
+   ruby planet. No frame and no card — the planet is a halo bleeding out of
+   the column behind the figure and fading into the page on every side.
+   The halo is sized to the figure rather than to the section: a section is
+   far taller than the 4:5 photo, so covering it would zoom the planet
+   clean out of frame on a phone.
+------------------------------------- */
+.sky{overflow-x:clip}
+.sky-figure{
+  position:relative;isolation:isolate;
+  margin:0 auto clamp(30px,4.4vw,52px);
+  width:min(100%,540px);
 }
-/* the same stage as the hero: the hosts cut out, standing on the ruby sky */
-.evening-stage{
-  position:relative;margin:0;overflow:hidden;
-  border-radius:var(--r-card);
-  border:1px solid var(--stroke);
-  background:#08080A;
-  min-height:clamp(340px,40vw,500px);
-  display:flex;align-items:flex-end;justify-content:center;
-  padding:clamp(14px,2vw,26px);
+.sky-halo{
+  position:absolute;z-index:-2;pointer-events:none;display:block;
+  left:50%;translate:-50% 0;
+  width:min(150%,820px);
+  top:-14%;bottom:-10%;
 }
-.es-bg{position:absolute;inset:0;z-index:0;display:block;pointer-events:none}
-.es-bg img{
+/* The fade is a mask on the photo itself, not a dark sheet over it: a sheet
+   can only reach the page colour at its own corners and leaves a rectangular
+   seam. Masked, the planet simply stops existing before the edge. */
+/* <picture> is inline by default, so the img's 100%/100% had nothing
+   definite to resolve against and the planet came out figure-sized */
+.sky-halo picture{display:block;width:100%;height:100%}
+.sky-halo img{
   width:100%;height:100%;display:block;
-  object-fit:cover;object-position:50% 40%;
-  filter:brightness(.66) saturate(1.04);
+  object-fit:cover;object-position:50% 42%;
+  filter:brightness(.8) saturate(1.03);
+  -webkit-mask-image:radial-gradient(70% 58% at 50% 46%,
+    #000 0%,rgba(0,0,0,.62) 54%,rgba(0,0,0,.20) 76%,transparent 90%);
+          mask-image:radial-gradient(70% 58% at 50% 46%,
+    #000 0%,rgba(0,0,0,.62) 54%,rgba(0,0,0,.20) 76%,transparent 90%);
 }
-/* the ground the hosts stand on */
-.evening-stage::after{
-  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(to top,rgba(8,8,10,.92) 0%,rgba(8,8,10,.34) 26%,transparent 60%);
+/* scoped to the direct child: a bare `.sky-figure img` also caught the
+   halo photo and squeezed it down to the subject's height */
+.sky-figure > picture img{
+  width:auto;max-width:100%;height:auto;
+  max-height:clamp(330px,46vh,540px);
+  display:block;margin-inline:auto;
+  filter:drop-shadow(0 30px 62px rgba(0,0,0,.8));
 }
-.es-hosts{
-  position:relative;z-index:2;
-  width:min(100%,430px);margin-inline:auto;
-}
-.es-hosts img{
-  width:auto;max-width:100%;height:auto;display:block;margin-inline:auto;
-  filter:drop-shadow(0 26px 52px rgba(0,0,0,.75));
-}
+.sky-figure-solo{width:min(100%,430px)}
+/* a single figure needs a tighter, darker sky — she is dressed in the same
+   red as the planet and would otherwise sink into it */
+.sky-figure-solo .sky-halo{width:min(150%,640px)}
+.sky-figure-solo .sky-halo img{filter:brightness(.62) saturate(1.02)}
 
-.hosts{display:grid;grid-template-rows:1fr 1fr;gap:clamp(12px,1.4vw,16px)}
+.hosts{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.4vw,16px)}
 .host{
   padding:clamp(24px,2.8vw,38px);
   background:var(--glass);border:1px solid var(--stroke);
@@ -1113,23 +1131,45 @@ body.locked{overflow:hidden}
   .bento-report{grid-template-columns:repeat(2,1fr)}
   .mosaic{grid-template-columns:repeat(3,1fr)}
   .media-note{grid-template-columns:1fr}
-  .evening-split{grid-template-columns:1fr}
-  .evening-stage{min-height:clamp(320px,58vw,420px)}
-  .hosts{grid-template-rows:auto auto}
+  .hosts{grid-template-columns:1fr}
 }
 
 @media (max-width:700px){
-  /* phone hero: small logo, big hosts, compact headline, button close under */
-  .hero-logo{width:min(38%,190px)}
-  .hero-hosts{max-width:100%;width:100%;margin-top:-6px}
-  .hero-inner{gap:10px}
+  /* phone hero: the wordmark and the hosts carry the screen, and the
+     date capsule is squeezed onto a single line so it stops eating height */
+  .nav-logo img{height:33px}
+  .hero{padding-block:58px clamp(24px,3vh,38px)}
+  .capsule{
+    font-size:clamp(9px,2.85vw,11px);
+    gap:7px;padding:7px 13px;
+    white-space:nowrap;
+  }
+  .cap-long{display:none}
+  .cap-short{display:inline}
+  .hero-logo{width:min(76%,290px)}
+  .hero-hosts{
+    /* breaks out of the wrap padding: the figure's width was the real cap.
+       Undoing the padding is exact; 100vw would also count the scrollbar. */
+    width:calc(100% + 2*var(--pad));max-width:none;
+    margin-inline:calc(-1*var(--pad));
+    margin-top:-8px;
+  }
+  .hero-hosts img{max-height:min(50vh,460px)}
+  .hero-inner{gap:9px}
   .hero h1{font-size:clamp(1.6rem,6.6vw,2.2rem);max-width:22ch}
   .hero-actions{margin-top:-6px}
   .hh-tag{padding:7px 11px;border-radius:11px}
   .hh-name{font-size:.8rem}
   .hh-role{font-size:9.5px}
-  .hh-left {left:-6px; top:66%}
-  .hh-right{right:-6px; top:55%}
+  /* the hosts now span the full screen, so the plates come in from the edge */
+  .hh-left {left:12px; top:66%}
+  .hh-right{right:12px; top:55%}
+  /* mid-page figures break the wrap too, exactly like the hero */
+  .sky-figure,.sky-figure-solo{
+    width:calc(100% + 2*var(--pad));max-width:none;
+    margin-inline:calc(-1*var(--pad));
+  }
+  .sky-figure > picture img{max-height:min(52vh,470px)}
 
   .sticky-cta{display:block}
   .scroll-cue{display:none}
@@ -1163,7 +1203,6 @@ body.locked{overflow:hidden}
   .mosaic{grid-template-columns:repeat(2,1fr)}
   .card{min-height:230px}
   .form-foot .btn{flex:1 1 100%}
-  .capsule{font-size:11.5px;padding:8px 14px;gap:8px}
 }
 
 /* touch devices: no hover lift, no cursor glow */
