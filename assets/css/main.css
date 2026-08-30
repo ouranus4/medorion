@@ -484,15 +484,10 @@ body.locked{overflow:hidden}
 }
 .hero .wrap{position:relative;z-index:3}
 
-.hero-inner{
-  display:grid;
-  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-  align-items:center;
-  gap:clamp(28px,4vw,64px);
-  text-align:left;
-}
-.hero-copy{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(16px,2vw,24px)}
-.hero-logo{margin-inline:0}
+/* Stacked, centred: info and logo on top, the hosts in the middle,
+   the call to action underneath. */
+.hero-inner{display:flex;flex-direction:column;align-items:center;gap:clamp(14px,1.8vw,22px)}
+.hero-copy{display:contents}
 
 .hero-sub{
   font-size:clamp(1rem,1.35vw,1.16rem);line-height:1.55;
@@ -500,29 +495,32 @@ body.locked{overflow:hidden}
   max-width:34ch;margin:0;
 }
 
-/* the hosts, holding the 2026 award */
+/* the hosts, cut out, standing on the page itself */
 .hero-hosts{
   position:relative;margin:0;
-  border-radius:var(--r-card);
-  overflow:hidden;
-  border:1px solid var(--stroke);
-  background:#08080A;
+  width:min(100%,560px);
+  margin-top:clamp(-6px,-1vw,0px);
 }
-.hero-hosts img{width:100%;height:auto;display:block}
-/* the shot fades into the page instead of ending on a hard edge */
-.hero-hosts::after{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(85% 72% at 50% 36%,transparent 42%,rgba(8,8,10,.52) 100%),
-    linear-gradient(to top,rgba(8,8,10,.94) 0%,rgba(8,8,10,.32) 26%,transparent 52%);
+.hero-hosts img{
+  width:100%;height:auto;display:block;
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,.75));
 }
-.hero-hosts figcaption{
-  position:absolute;left:0;right:0;bottom:0;z-index:2;
-  display:flex;flex-direction:column;gap:4px;
-  padding:clamp(16px,2vw,24px);
+/* glass name plates beside each host */
+.hh-tag{
+  position:absolute;z-index:2;
+  display:flex;flex-direction:column;gap:2px;
+  padding:9px 15px;border-radius:14px;
+  background:rgba(12,12,14,.62);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+  white-space:nowrap;
+  text-align:left;
 }
-.hh-role{font-size:11.5px;font-weight:600;color:var(--ruby)}
-.hh-name{font-size:clamp(1rem,1.5vw,1.24rem);font-weight:600;letter-spacing:-.025em;color:var(--white)}
+.hh-left {left:clamp(-14px,-2%,0px);  top:44%}
+.hh-right{right:clamp(-14px,-2%,0px); top:26%}
+.hh-name{font-size:clamp(.84rem,1.15vw,.98rem);font-weight:600;letter-spacing:-.02em;color:var(--white)}
+.hh-role{font-size:10.5px;font-weight:500;color:var(--ruby)}
 
 .hero h1{max-width:15ch;margin:0}
 .hero-actions{
@@ -548,7 +546,6 @@ body.locked{overflow:hidden}
   position:relative;
   width:min(76%,440px);
   margin-inline:auto;
-  animation:logoFloat 9s ease-in-out infinite;
 }
 /* ruby bloom sitting behind the mark */
 .hero-logo::before{
@@ -619,7 +616,6 @@ body.locked{overflow:hidden}
   16%    {opacity:0;transform:scale(.3)  rotate(80deg)}
 }
 
-@keyframes logoFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
 @media (prefers-reduced-motion:reduce){
   .hero-logo,.hero-logo img{animation:none}
   .hero-logo img{filter:drop-shadow(0 14px 44px rgba(0,0,0,.85))}
