@@ -453,16 +453,33 @@ body.locked{overflow:hidden}
   text-align:center;
   padding-block:clamp(74px,9vh,100px) clamp(28px,3.4vh,46px);
   background:var(--black);
+  /* confines the shader's screen blend to the hero's own sky */
+  isolation:isolate;
 }
-/* animated ruby gradient (WebGL) — silky blades of light on black */
-.hero-gradient{
+/* the ruby planet standing behind everything */
+.hero-bg{
   position:absolute;inset:0;z-index:0;
+  display:block;pointer-events:none;
+}
+.hero-bg img{
+  width:100%;height:100%;display:block;
+  object-fit:cover;object-position:50% 42%;
+  /* held back so white type keeps its contrast over the glow */
+  filter:brightness(.68) saturate(1.04);
+}
+
+/* animated ruby gradient (WebGL) — silky blades of light on black.
+   Screened over the planet: the shader's black stays invisible and only
+   its blades of light travel across the sky. */
+.hero-gradient{
+  position:absolute;inset:0;z-index:1;
   width:100%;height:100%;
   display:block;pointer-events:none;
   opacity:0;
+  mix-blend-mode:screen;
   transition:opacity 1.2s var(--ease);
 }
-.hero-gradient.lit{opacity:1}
+.hero-gradient.lit{opacity:.5}
 
 /* Darkens the lower half where the copy sits, keeping the headline readable
    over the moving blades of the shader. */
@@ -794,21 +811,34 @@ body.locked{overflow:hidden}
   display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
   gap:clamp(14px,1.8vw,22px);align-items:stretch;
 }
-.evening-photo{
+/* the same stage as the hero: the hosts cut out, standing on the ruby sky */
+.evening-stage{
   position:relative;margin:0;overflow:hidden;
   border-radius:var(--r-card);
   border:1px solid var(--stroke);
   background:#08080A;
+  min-height:clamp(340px,40vw,500px);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:clamp(14px,2vw,26px);
 }
-.evening-photo img{width:100%;height:100%;object-fit:cover;object-position:center 26%;display:block}
-.evening-photo::after{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(to top,rgba(8,8,10,.94) 0%,rgba(8,8,10,.30) 28%,transparent 54%);
+.es-bg{position:absolute;inset:0;z-index:0;display:block;pointer-events:none}
+.es-bg img{
+  width:100%;height:100%;display:block;
+  object-fit:cover;object-position:50% 40%;
+  filter:brightness(.66) saturate(1.04);
 }
-.evening-photo figcaption{
-  position:absolute;left:0;right:0;bottom:0;z-index:2;
-  display:flex;flex-direction:column;gap:4px;
-  padding:clamp(16px,2vw,24px);
+/* the ground the hosts stand on */
+.evening-stage::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to top,rgba(8,8,10,.92) 0%,rgba(8,8,10,.34) 26%,transparent 60%);
+}
+.es-hosts{
+  position:relative;z-index:2;
+  width:min(100%,430px);margin-inline:auto;
+}
+.es-hosts img{
+  width:auto;max-width:100%;height:auto;display:block;margin-inline:auto;
+  filter:drop-shadow(0 26px 52px rgba(0,0,0,.75));
 }
 
 .hosts{display:grid;grid-template-rows:1fr 1fr;gap:clamp(12px,1.4vw,16px)}
@@ -1084,7 +1114,7 @@ body.locked{overflow:hidden}
   .mosaic{grid-template-columns:repeat(3,1fr)}
   .media-note{grid-template-columns:1fr}
   .evening-split{grid-template-columns:1fr}
-  .evening-photo{aspect-ratio:4/3}
+  .evening-stage{min-height:clamp(320px,58vw,420px)}
   .hosts{grid-template-rows:auto auto}
 }
 
