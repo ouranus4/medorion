@@ -183,6 +183,19 @@
   }
 
   /* ----------------------------------------------------------
+     TICKER
+     The CSS marquee shifts the track by -50%, so the content has to
+     appear exactly twice for the loop to be seamless.
+     ---------------------------------------------------------- */
+  (function ticker() {
+    var track = $('#tickerTrack');
+    if (!track) return;
+    var original = track.innerHTML;
+    track.innerHTML = original + original;
+    track.setAttribute('aria-hidden', 'true');
+  })();
+
+  /* ----------------------------------------------------------
      HERO GRADIENT
      Silky ruby blades of light sweeping across black, drawn by a
      WebGL fragment shader. Raw WebGL — no library, no build step.
