@@ -508,27 +508,6 @@
   })();
 
   /* ----------------------------------------------------------
-     НІЧНЕ НЕБО
-     Небо проявляється, слідом підіймається статуетка.
-     ---------------------------------------------------------- */
-  (function orion() {
-    var box = $('#orion');
-    if (!box) return;
-    if (!('IntersectionObserver' in window) || reduceMotion) {
-      box.classList.add('lit');
-      return;
-    }
-    var oio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        en.target.classList.add('lit');
-        oio.unobserve(en.target);
-      });
-    }, { threshold: 0.25 });
-    oio.observe(box);
-  })();
-
-  /* ----------------------------------------------------------
      STORY VIDEO
      The native centred play button lands on the reporter's face, so the
      video ships without controls and we drive the first play ourselves.
