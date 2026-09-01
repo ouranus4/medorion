@@ -238,13 +238,15 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 /* ---------- expert board ----------
    Рада живе всередині блоку лауреатів, тож її треба відбити:
    волосяна лінія на всю ширину і власний підзаголовок. */
+/* два підблоки в одній секції: кожен має свій відступ згори */
+#residents,#board{scroll-margin-top:calc(var(--ticker-h) + 100px)}
+.bs-title{margin-top:clamp(30px,3.4vw,44px)}
+
 .split-rule{
   height:1px;margin:clamp(52px,6vw,84px) 0 clamp(34px,4vw,54px);
   background:linear-gradient(90deg,transparent,var(--hairline) 18%,
              var(--hairline) 82%,transparent);
 }
-.sec-head-sub{scroll-margin-top:calc(var(--ticker-h) + 100px)}
-.sec-head-sub h2{font-size:clamp(1.6rem,3.2vw,2.5rem)}
 
 .board-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
@@ -1094,9 +1096,6 @@ body.locked{overflow:hidden}
    LAUREATES
    ============================================================ */
 .laureates{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(12px,1.2vw,16px)}
-.board-people{grid-template-columns:repeat(4,1fr);margin-bottom:clamp(34px,4vw,54px)}
-.board-people .lau-role{color:var(--ruby);font-weight:500}
-#board .bs-title{margin-bottom:18px}
 .lau{
   display:flex;flex-direction:column;overflow:hidden;
   background:var(--glass);border:1px solid var(--stroke);
@@ -1625,13 +1624,6 @@ body.locked{overflow:hidden}
    ============================================================ */
 
 /* Рада ділиться інакше, ніж лауреати: людей шість, а не девʼять */
-@media (max-width:900px){
-  .board-people{grid-template-columns:repeat(3,1fr)}
-}
-@media (max-width:620px){
-  .board-people{grid-template-columns:repeat(2,1fr)}
-}
-
 /* Кружечки під кнопкою: на телефоні пʼять аватарів і довгий підпис
    не влазять в один рядок, тому останній ховаємо, а текст переносимо */
 @media (max-width:700px){
