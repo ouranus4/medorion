@@ -279,12 +279,14 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 /* ---------- великі зорі ---------- */
 .or-star{opacity:0;transform-box:fill-box;transform-origin:center}
 .or-core{fill:#fff}
-.or-bloom{fill:#fff;opacity:.16;filter:blur(5px)}
-.or-glow{fill:var(--ruby);opacity:.6;filter:blur(4px)}
-/* промені-голки: довгі, тонкі, як у справжнього блиску */
-.or-ray{fill:#fff}
-.or-ray-a{opacity:.95}
-.or-ray-b{opacity:.6;transform:rotate(45deg);transform-box:fill-box;transform-origin:center}
+/* Шари одної зорі, знизу вгору: рубіновий ореол, білий бутон,
+   промені й нарешті ядро. Усе на градієнтах, тому краї згасають
+   у порожнечу, а не обриваються. */
+.or-ruby{fill:url(#orRuby)}
+.or-bloom{fill:url(#orBloom)}
+.or-ray{fill:url(#orRayFade)}
+.or-ray-a{opacity:1}
+.or-ray-b{opacity:.7;transform:rotate(45deg);transform-box:fill-box;transform-origin:center}
 
 .orion.lit .or-star{
   animation:orSpark .85s var(--ease) forwards;
@@ -299,7 +301,7 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
   animation:orTwinkle 5s ease-in-out infinite;
   animation-delay:calc(2.4s + var(--i) * .23s);
 }
-@keyframes orTwinkle{0%,100%{opacity:.95}50%{opacity:.45}}
+@keyframes orTwinkle{0%,100%{opacity:1}50%{opacity:.5}}
 
 /* мʼяке затемнення під статуеткою, щоб срібло відділялось від зір */
 .or-aura{
