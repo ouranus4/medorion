@@ -719,7 +719,7 @@ body.locked{overflow:hidden}
   min-height:calc(100svh - var(--ticker-h));
   display:flex;align-items:center;justify-content:center;
   text-align:center;
-  padding-block:clamp(74px,9vh,100px) clamp(28px,3.4vh,46px);
+  padding-block:clamp(64px,7.4vh,88px) clamp(22px,2.8vh,38px);
   background:var(--black);
   /* confines the shader's screen blend to the hero's own sky */
   isolation:isolate;
@@ -782,8 +782,9 @@ body.locked{overflow:hidden}
 }
 .hero-hosts img{
   width:auto;max-width:100%;
-  /* capped against the viewport so the CTA stays above the fold */
-  max-height:clamp(250px,36vh,420px);
+  /* capped against the viewport so the CTA and the laureate row
+     both stay above the fold */
+  max-height:clamp(230px,31vh,380px);
   height:auto;display:block;margin-inline:auto;
   filter:drop-shadow(0 30px 60px rgba(0,0,0,.75));
 }
@@ -811,6 +812,31 @@ body.locked{overflow:hidden}
   gap:14px;margin-top:6px;
 }
 .hero-actions .btn{padding:17px 34px;min-height:56px;font-size:15px}
+
+/* ---------- соціальний доказ під кнопкою ---------- */
+.proof{
+  display:inline-flex;align-items:center;gap:13px;
+  margin-top:clamp(14px,1.8vh,22px);
+  padding:7px 16px 7px 7px;border-radius:999px;
+  border:1px solid transparent;
+  transition:border-color .4s var(--ease),background .4s var(--ease);
+}
+.proof:hover{border-color:var(--stroke);background:rgba(255,255,255,.04)}
+.proof-faces{display:inline-flex;align-items:center}
+.proof-faces img{
+  width:clamp(30px,3.2vw,36px);height:clamp(30px,3.2vw,36px);
+  border-radius:50%;object-fit:cover;
+  border:2px solid #0A0A0C;
+  box-shadow:0 2px 10px rgba(0,0,0,.6);
+}
+/* кожне наступне заходить на попереднє */
+.proof-faces img + img{margin-left:-12px}
+.proof:hover .proof-faces img{border-color:#14090B}
+.proof-text{
+  font-size:13.5px;font-weight:500;letter-spacing:-.01em;
+  color:var(--grey);white-space:nowrap;
+}
+.proof-text b{color:var(--white);font-weight:700}
 
 
 /* scroll cue */
@@ -1051,6 +1077,9 @@ body.locked{overflow:hidden}
    LAUREATES
    ============================================================ */
 .laureates{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(12px,1.2vw,16px)}
+.board-people{grid-template-columns:repeat(6,1fr);margin-bottom:clamp(34px,4vw,54px)}
+.board-people .lau-role{color:var(--ruby);font-weight:500}
+#board .bs-title{margin-bottom:18px}
 .lau{
   display:flex;flex-direction:column;overflow:hidden;
   background:var(--glass);border:1px solid var(--stroke);
@@ -1572,4 +1601,27 @@ body.locked{overflow:hidden}
   .card:hover::before{opacity:0}
   .mosaic figure:hover img{transform:none}
   .chip img{opacity:.8}
+}
+
+/* ============================================================
+   ХВІСТ: правила, які мають перекрити ширші медіазапити вище
+   ============================================================ */
+
+/* Рада ділиться інакше, ніж лауреати: людей шість, а не девʼять */
+@media (max-width:1240px){
+  .board-people{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:620px){
+  .board-people{grid-template-columns:repeat(2,1fr)}
+}
+
+/* Кружечки під кнопкою: на телефоні пʼять аватарів і довгий підпис
+   не влазять в один рядок, тому останній ховаємо, а текст переносимо */
+@media (max-width:700px){
+  .proof{
+    gap:11px;padding:6px 14px 6px 6px;
+    max-width:100%;
+  }
+  .proof-faces img:nth-child(5){display:none}
+  .proof-text{white-space:normal;font-size:12.5px;text-align:left}
 }

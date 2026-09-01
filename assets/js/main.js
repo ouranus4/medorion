@@ -39,7 +39,15 @@
     'olha-samokhvalova': 'https://www.instagram.com/p/DavPuDbtTNc/',
     'liliia-yurkova':    'https://www.instagram.com/p/DaKEyWuNh8v/',
     'maryna-oushen':     'https://www.instagram.com/p/DZ9w1Rnt0La/',
-    'inna-prystupa':     'https://www.instagram.com/p/DZ9uPaLtVFX/'
+    'inna-prystupa':     'https://www.instagram.com/p/DZ9uPaLtVFX/',
+
+    // Експертна рада
+    'zolotareva':        'https://www.instagram.com/p/DZfI5WAtnoG/',
+    'reynolds':          'https://www.instagram.com/p/DZfJJLGNDz3/',
+    'zaruzhko':          'https://www.instagram.com/p/DZfJXOkNVGZ/',
+    'chernomorets':      'https://www.instagram.com/p/DZhV-6-NiEi/',
+    'raevskiy':          'https://www.instagram.com/p/DZhWzf_Nnas/',
+    'pivovarenko':       'https://www.instagram.com/p/DaChJT_tnvv/'
   };
 
   // Куди вести людину, якщо мережа підвела
