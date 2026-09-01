@@ -508,6 +508,35 @@
   })();
 
   /* ----------------------------------------------------------
+     СУЗІРʼЯ ОРІОНА
+     CSS вміє малювати лінію штрихом, але довжину кожної має знати
+     заздалегідь. Міряємо її тут і віддаємо в --len; далі все робить
+     сам CSS, коли блок входить у кадр.
+     ---------------------------------------------------------- */
+  (function orion() {
+    var box = $('#orion');
+    if (!box) return;
+
+    $$('.or-line', box).forEach(function (ln) {
+      var len = ln.getTotalLength ? ln.getTotalLength() : 200;
+      ln.style.setProperty('--len', len.toFixed(1));
+    });
+
+    if (!('IntersectionObserver' in window) || reduceMotion) {
+      box.classList.add('lit');
+      return;
+    }
+    var oio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('lit');
+        oio.unobserve(en.target);
+      });
+    }, { threshold: 0.28 });
+    oio.observe(box);
+  })();
+
+  /* ----------------------------------------------------------
      STORY VIDEO
      The native centred play button lands on the reporter's face, so the
      video ships without controls and we drive the first play ourselves.
