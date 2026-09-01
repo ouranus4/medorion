@@ -238,29 +238,37 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 .orion{
   position:relative;isolation:isolate;
   margin:0 0 clamp(30px,3.6vw,48px);
-  padding:clamp(20px,2.6vw,36px);
-  border-radius:var(--r-card);
-  border:1px solid var(--stroke);
-  background:
-    radial-gradient(62% 66% at 50% 46%,rgba(229,9,20,.13),transparent 74%),
-    #050506;
-  overflow:hidden;
+  padding:clamp(10px,1.4vw,20px);
+  /* без рамки: небо має переходити в сторінку, а не сидіти в коробці */
+  background:radial-gradient(58% 62% at 50% 46%,rgba(229,9,20,.15),transparent 72%);
   min-height:clamp(430px,60vw,760px);
   display:flex;align-items:center;justify-content:center;
 }
 
 /* Сузірʼя — тло на всю панель. Розмір задаємо явно: SVG це заміщений
    елемент, і при height:auto браузер рахує висоту за пропорцією
-   viewBox, а не за рамкою — картинка вилазила за межі панелі.
-   inset:0 відміряється від padding-box, тож поля панелі враховані. */
+   viewBox, а не за рамкою — картинка вилазила за межі панелі. */
 .or-sky{
   position:absolute;inset:0;
   width:100%;height:100%;
   overflow:visible;
 }
+
+/* ---------- дрібні зорі тла ---------- */
+.or-dust{fill:#fff;opacity:0}
+.orion.lit .or-dust{
+  animation:orDust var(--t,5s) ease-in-out infinite;
+  animation-delay:var(--d,0s);
+}
+@keyframes orDust{
+  0%,100%{opacity:calc(var(--o,.5) * .25)}
+  50%    {opacity:var(--o,.5)}
+}
+
+/* ---------- лінії сузірʼя ---------- */
 .or-line{
-  stroke:rgba(255,255,255,.42);
-  stroke-width:1.1;
+  stroke:rgba(255,255,255,.38);
+  stroke-width:1;
   stroke-dasharray:var(--len,200);
   stroke-dashoffset:var(--len,200);
   transition:stroke-dashoffset .55s var(--ease);
@@ -268,36 +276,36 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 }
 .orion.lit .or-line{stroke-dashoffset:0}
 
+/* ---------- великі зорі ---------- */
 .or-star{opacity:0;transform-box:fill-box;transform-origin:center}
 .or-core{fill:#fff}
-/* довгий промінь горизонтально, короткий вертикально — як у справжнього блиску */
+.or-bloom{fill:#fff;opacity:.16;filter:blur(5px)}
+.or-glow{fill:var(--ruby);opacity:.6;filter:blur(4px)}
+/* промені-голки: довгі, тонкі, як у справжнього блиску */
 .or-ray{fill:#fff}
-.or-ray-a{opacity:.92}
-.or-ray-b{opacity:.55;transform:rotate(45deg);transform-box:fill-box;transform-origin:center}
-.or-glow{fill:var(--ruby);opacity:.55;filter:blur(6px)}
+.or-ray-a{opacity:.95}
+.or-ray-b{opacity:.6;transform:rotate(45deg);transform-box:fill-box;transform-origin:center}
 
 .orion.lit .or-star{
-  animation:orSpark .8s var(--ease) forwards;
+  animation:orSpark .85s var(--ease) forwards;
   animation-delay:calc(var(--i) * .09s);
 }
 @keyframes orSpark{
-  0%  {opacity:0;transform:scale(.15)}
-  55% {opacity:1;transform:scale(1.65)}
+  0%  {opacity:0;transform:scale(.1)}
+  55% {opacity:1;transform:scale(1.7)}
   100%{opacity:1;transform:scale(1)}
 }
-.orion.lit .or-star{animation-fill-mode:forwards}
-/* після спалаху промені ледь дихають */
 .orion.lit .or-ray-a{
   animation:orTwinkle 5s ease-in-out infinite;
   animation-delay:calc(2.4s + var(--i) * .23s);
 }
-@keyframes orTwinkle{0%,100%{opacity:.92}50%{opacity:.42}}
+@keyframes orTwinkle{0%,100%{opacity:.95}50%{opacity:.45}}
 
-/* мʼяке тло під статуеткою, щоб вона відділилась від зір */
+/* мʼяке затемнення під статуеткою, щоб срібло відділялось від зір */
 .or-aura{
   position:absolute;left:50%;top:52%;translate:-50% -50%;
   width:min(42%,340px);aspect-ratio:3/4;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(5,5,6,.82),rgba(5,5,6,.45) 58%,transparent 100%);
+  background:radial-gradient(closest-side,rgba(5,5,6,.8),rgba(5,5,6,.42) 58%,transparent 100%);
   opacity:0;transition:opacity 1s var(--ease) 2.9s;
   pointer-events:none;
 }
@@ -319,7 +327,7 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 }
 
 .orion figcaption{
-  position:absolute;left:0;right:0;bottom:clamp(14px,1.8vw,22px);z-index:4;
+  position:absolute;left:0;right:0;bottom:clamp(6px,1vw,14px);z-index:4;
   text-align:center;
   font-size:12.5px;font-weight:500;letter-spacing:.03em;
   color:var(--dim);
@@ -328,7 +336,7 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 .orion.lit figcaption{opacity:1}
 
 @media (max-width:760px){
-  .orion{min-height:clamp(420px,104vw,560px);padding-bottom:58px}
+  .orion{min-height:clamp(420px,104vw,560px);padding-bottom:48px}
   .or-statue img{max-height:min(40vh,300px)}
   .or-aura{width:min(64%,300px)}
   .orion figcaption{font-size:12px;padding-inline:12px}
@@ -336,11 +344,11 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 
 /* Без анімацій показуємо готовий кадр. */
 @media (prefers-reduced-motion:reduce){
-  .or-star{opacity:1}
+  .or-star,.or-dust{opacity:1}
   .or-line{stroke-dashoffset:0}
   .or-aura,.or-statue,.orion figcaption{opacity:1}
   .or-statue{transform:none}
-  .orion.lit .or-star,.orion.lit .or-ray-a{animation:none}
+  .orion.lit .or-star,.orion.lit .or-ray-a,.orion.lit .or-dust{animation:none}
 }
 
 /* ---------- expert board ---------- */
