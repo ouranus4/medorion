@@ -47,7 +47,8 @@
     'zaruzhko':          'https://www.instagram.com/p/DZfJXOkNVGZ/',
     'chernomorets':      'https://www.instagram.com/p/DZhV-6-NiEi/',
     'raevskiy':          'https://www.instagram.com/p/DZhWzf_Nnas/',
-    'pivovarenko':       'https://www.instagram.com/p/DaChJT_tnvv/'
+    'pivovarenko':       'https://www.instagram.com/p/DaChJT_tnvv/',
+    'kosmachova':        'https://www.instagram.com/p/Dcv4ebMNKt3/'
   };
 
   // Куди вести людину, якщо мережа підвела

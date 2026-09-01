@@ -235,7 +235,17 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
    і в центрі підіймається статуетка. Усе на CSS-переходах: JS лише
    вимірює довжину ліній і додає клас, коли блок входить у кадр.
    ============================================================ */
-/* ---------- expert board ---------- */
+/* ---------- expert board ----------
+   Рада живе всередині блоку лауреатів, тож її треба відбити:
+   волосяна лінія на всю ширину і власний підзаголовок. */
+.split-rule{
+  height:1px;margin:clamp(52px,6vw,84px) 0 clamp(34px,4vw,54px);
+  background:linear-gradient(90deg,transparent,var(--hairline) 18%,
+             var(--hairline) 82%,transparent);
+}
+.sec-head-sub{scroll-margin-top:calc(var(--ticker-h) + 100px)}
+.sec-head-sub h2{font-size:clamp(1.6rem,3.2vw,2.5rem)}
+
 .board-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:clamp(12px,1.4vw,18px);
@@ -243,6 +253,7 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 }
 .board-card{
   padding:clamp(20px,2.4vw,30px);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-radius:var(--r-card);
   border:1px solid var(--stroke);
   background:var(--glass);
@@ -1083,7 +1094,7 @@ body.locked{overflow:hidden}
    LAUREATES
    ============================================================ */
 .laureates{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(12px,1.2vw,16px)}
-.board-people{grid-template-columns:repeat(6,1fr);margin-bottom:clamp(34px,4vw,54px)}
+.board-people{grid-template-columns:repeat(4,1fr);margin-bottom:clamp(34px,4vw,54px)}
 .board-people .lau-role{color:var(--ruby);font-weight:500}
 #board .bs-title{margin-bottom:18px}
 .lau{
@@ -1614,7 +1625,7 @@ body.locked{overflow:hidden}
    ============================================================ */
 
 /* Рада ділиться інакше, ніж лауреати: людей шість, а не девʼять */
-@media (max-width:1240px){
+@media (max-width:900px){
   .board-people{grid-template-columns:repeat(3,1fr)}
 }
 @media (max-width:620px){
