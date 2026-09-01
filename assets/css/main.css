@@ -79,6 +79,57 @@ button{font:inherit;color:inherit}
 .wrap{width:100%;max-width:var(--max);margin:0 auto;padding-inline:var(--pad)}
 
 section{position:relative;padding-block:var(--sec)}
+
+/* ---------- light band ----------
+   A whole section flipped to paper, so the page breathes instead of
+   running as one unbroken black column. Everything here is a token
+   override — no component is rewritten. */
+section.light{
+  background:#F4F4F6;
+  color:#55555A;
+  --glass:#FFFFFF;
+  --glass-hi:#FFFFFF;
+  --stroke:rgba(0,0,0,.09);
+  --stroke-hi:rgba(0,0,0,.16);
+  --hairline:rgba(0,0,0,.10);
+  --white:#0A0A0C;
+  --grey:#55555A;
+  --graphite:#7B7B82;
+  --dim:#8A8A90;
+}
+.light .mute{
+  background:linear-gradient(180deg,#4C4C52 0%,#8E8E95 62%,#A6A6AD 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.light .lead{color:#5A5A60}
+.light .card{box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px rgba(0,0,0,.05)}
+.light .card:hover{
+  box-shadow:0 18px 44px rgba(0,0,0,.10),0 0 0 1px var(--ruby-soft);
+  background:#fff;
+}
+.light .card-icon{background:rgba(0,0,0,.035);border-color:rgba(0,0,0,.10)}
+.light .card-tag{border-color:rgba(0,0,0,.12);color:#6E6E75}
+.light .card-note{color:var(--ruby)}
+/* the cursor glow is built for black — on paper it just muddies the card */
+.light .card::after{display:none}
+.light .note-bar{background:#fff;border-color:rgba(0,0,0,.09)}
+.light .pull{background:#fff;border-color:rgba(0,0,0,.09)}
+.light .pull p{color:#55555A}
+.light .pull footer{color:#8A8A90}
+.light .btn{background:#0A0A0C;color:#fff}
+/* channel tiles are already a light chip — on paper they need their own
+   white and a border, otherwise they melt into the band */
+.light .chip{background:#fff;border-color:rgba(0,0,0,.09)}
+.light .chip:hover{box-shadow:0 14px 34px rgba(0,0,0,.12),0 0 0 1px var(--ruby-soft)}
+.light .pr-icon{background:rgba(0,0,0,.035);border-color:rgba(0,0,0,.10)}
+.light .pr-list li{border-color:rgba(0,0,0,.09)}
+.light .pr-list strong{color:#0A0A0C}
+.light .media-note{background:#fff;border-color:rgba(0,0,0,.09)}
+.light .stat-num,.light .pr-365{color:#0A0A0C}
+/* a light band sits against black on both sides — no hairline needed */
+.light + section::before,
+section.light::before{display:none}
 /* hairline between sections instead of colour blocks */
 section + section::before{
   content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
@@ -121,19 +172,25 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 }
 
 .lead{
-  font-size:clamp(1rem,1.3vw,1.12rem);
-  line-height:1.62;
-  color:var(--grey);
-  max-width:66ch;
+  font-size:clamp(1.06rem,1.45vw,1.26rem);
+  line-height:1.66;
+  color:#B6B6BC;
+  max-width:62ch;
   margin:0;
-  letter-spacing:-.011em;
+  letter-spacing:-.013em;
 }
 
-/* eyebrow: quiet ruby label, no glyphs */
+/* eyebrow: quiet ruby label with a short rule, so every section opens
+   the same way and the page gets a visible rhythm */
 .eyebrow{
-  font-size:12px;font-weight:600;letter-spacing:.01em;
+  display:inline-flex;align-items:center;gap:11px;
+  font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
   color:var(--ruby);
-  margin:0 0 14px;
+  margin:0 0 16px;
+}
+.eyebrow::before{
+  content:"";width:26px;height:1px;flex-shrink:0;
+  background:linear-gradient(90deg,transparent,var(--ruby));
 }
 
 .sec-head{max-width:820px;margin-bottom:clamp(34px,4.4vw,60px)}
@@ -149,7 +206,6 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 .ig-link .ic{width:17px;height:17px;color:var(--ruby)}
 .ig-link:hover{border-color:var(--ruby-soft);color:var(--white);background:var(--glass-hi)}
 .sec-cta{display:flex;justify-content:center;margin-top:clamp(28px,3.4vw,44px)}
-/* the board's five sections, as chips rather than a run-on sentence */
 /* a passage lifted out of the flow — wider type, a ruby rule down the side */
 .pull{
   margin:0 0 clamp(30px,3.6vw,46px);
@@ -173,17 +229,54 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
 }
 .pull footer .ic{width:16px;height:16px;color:var(--graphite);flex-shrink:0}
 
-.board{
-  display:flex;flex-wrap:wrap;gap:8px;
-  list-style:none;margin:16px 0 0;padding:0;
+/* ---------- expert board ---------- */
+.board-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(12px,1.4vw,18px);
+  margin-bottom:clamp(30px,3.6vw,48px);
 }
-.board li{
-  padding:7px 14px;border-radius:999px;
+.board-card{
+  padding:clamp(20px,2.4vw,30px);
+  border-radius:var(--r-card);
   border:1px solid var(--stroke);
-  background:rgba(255,255,255,.03);
-  font-size:12.5px;font-weight:500;color:var(--grey);
-  letter-spacing:-.005em;
+  background:var(--glass);
+  transition:border-color .45s var(--ease),transform .45s var(--ease),
+             box-shadow .45s var(--ease);
 }
+.board-card:hover{
+  border-color:var(--ruby-soft);transform:translateY(-4px);
+  box-shadow:0 18px 44px rgba(0,0,0,.10);
+}
+.bc-num{
+  display:block;margin-bottom:14px;
+  font-size:clamp(1.7rem,2.6vw,2.3rem);font-weight:700;
+  letter-spacing:-.04em;line-height:1;
+  color:transparent;-webkit-text-stroke:1px var(--ruby);
+}
+.board-card h3{margin-bottom:6px}
+.bc-en{
+  margin:0;font-size:12.5px;font-weight:500;letter-spacing:.01em;
+  color:var(--dim);
+}
+
+.board-split{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(20px,2.6vw,40px);align-items:start;
+}
+.bs-title{margin-bottom:18px}
+.ticks{list-style:none;margin:0;padding:0}
+.ticks li{
+  position:relative;padding:11px 0 11px 30px;
+  border-bottom:1px solid var(--hairline);
+  font-size:15px;line-height:1.5;color:var(--grey);
+}
+.ticks li:last-child{border-bottom:0}
+.ticks li::before{
+  content:"";position:absolute;left:2px;top:19px;
+  width:9px;height:9px;border-radius:50%;
+  border:1.5px solid var(--ruby);
+}
+.board-split .pull{margin-bottom:0;max-width:none}
 .sec-cta .btn{padding:16px 32px;min-height:54px}
 .sec-head.center{margin-inline:auto;text-align:center}
 
@@ -1289,6 +1382,11 @@ body.locked{overflow:hidden}
   .foot-logo{grid-column:1/-1}
 }
 
+@media (max-width:960px){
+  .board-grid{grid-template-columns:repeat(2,1fr)}
+  .board-split{grid-template-columns:1fr;gap:26px}
+}
+
 @media (max-width:820px){
   .bento-report{grid-template-columns:repeat(2,1fr)}
   .mosaic{grid-template-columns:repeat(3,1fr)}
@@ -1356,6 +1454,10 @@ body.locked{overflow:hidden}
   .laureates{grid-template-columns:repeat(2,1fr);gap:10px}
   .lau-face{aspect-ratio:1/1}
   .scroll-hint{display:none}
+}
+
+@media (max-width:640px){
+  .board-grid{grid-template-columns:1fr}
 }
 
 @media (max-width:560px){
