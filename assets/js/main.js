@@ -47,6 +47,11 @@
 
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Ефекти, що ховають вміст (маска заголовка, промальовка ліній), вмикаються
+  // лише коли цей скрипт справді виконався. Без нього — і якщо він упаде —
+  // сторінка лишається повністю читабельною, просто без анімацій.
+  if (!reduceMotion) document.documentElement.classList.add('fx');
   var canHover     = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   var $  = function (s, c) { return (c || document).querySelector(s); };
@@ -113,6 +118,132 @@
     setMenu(false);
     closeModal();
   });
+
+  /* ----------------------------------------------------------
+     ЗАВІСА ЗАВАНТАЖЕННЯ
+     Тримає перший екран, поки не готові шрифти й важливі картинки.
+     Знімається за будь-яких обставин: є жорсткий тайм-аут, і навіть
+     якщо щось не завантажиться, сторінка відкриється.
+     ---------------------------------------------------------- */
+  (function loader() {
+    var box  = $('#loader');
+    var fill = $('#ldFill');
+    var pct  = $('#ldPct');
+
+    function open() {
+      document.body.classList.remove('loading');
+      if (box) box.classList.add('gone');
+      // прибираємо з дерева, щоб не ловив фокус і не читався з екрана
+      setTimeout(function () { if (box && box.parentNode) box.remove(); }, 1200);
+    }
+
+    if (!box || reduceMotion) { open(); return; }
+
+    document.body.classList.add('loading');
+    // будь-яка несподівана помилка не має замкнути сторінку
+    window.addEventListener('error', open);
+
+    // чекаємо тільки на те, що видно на першому екрані
+    var critical = ['assets/img/logo.png', 'assets/img/hosts-cut.webp', 'assets/img/space-bg.webp'];
+    var total = critical.length + 1;          // + шрифти
+    var done  = 0;
+    var shown = 0;
+    var start = Date.now();
+    var finished = false;
+
+    function step() {
+      var target = Math.round(done / total * 100);
+      // смуга ніколи не стрибає назад і не завмирає на нулі
+      shown = Math.max(shown, target);
+      if (fill) fill.style.width = shown + '%';
+      if (pct)  pct.textContent = shown;
+    }
+
+    function tick() {
+      done++;
+      step();
+      if (done >= total) finish();
+    }
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      shown = 100; step();
+      // мінімум 600 мс, щоб смуга не мигнула й одразу не зникла
+      var wait = Math.max(0, 600 - (Date.now() - start));
+      setTimeout(open, wait + 260);
+    }
+
+    critical.forEach(function (src) {
+      var im = new Image();
+      im.onload = im.onerror = tick;
+      im.src = src;
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(tick).catch(tick);
+    } else {
+      tick();
+    }
+
+    // страховка: за 3 секунди відкриваємо в будь-якому разі
+    setTimeout(finish, 3000);
+  })();
+
+  /* ----------------------------------------------------------
+     СМУГА ПРОГРЕСУ ПРОКРУТКИ
+     ---------------------------------------------------------- */
+  (function scrollProgress() {
+    var bar = $('#scrollBar');
+    var box = bar && bar.parentNode;
+    if (!bar) return;
+    var ticking = false;
+
+    function paint() {
+      ticking = false;
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+      bar.style.width = (p * 100).toFixed(2) + '%';
+      box.classList.toggle('on', window.scrollY > 120);
+    }
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(paint);
+    }, { passive: true });
+    window.addEventListener('resize', paint, { passive: true });
+    paint();
+  })();
+
+  /* ----------------------------------------------------------
+     СЕКЦІЯ У ПОЛІ ЗОРУ
+     Дає класи для промальовки лінії між блоками й появи заголовка.
+     ---------------------------------------------------------- */
+  (function sectionsIn() {
+    var secs = $$('section');
+    var heads = $$('.sec-head h2');
+    if (!('IntersectionObserver' in window) || reduceMotion) {
+      secs.forEach(function (s) { s.classList.add('in'); });
+      heads.forEach(function (h) { h.classList.add('on'); });
+      return;
+    }
+    var sio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('in');
+        sio.unobserve(en.target);
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+    secs.forEach(function (s) { sio.observe(s); });
+
+    var hio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('on');
+        hio.unobserve(en.target);
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+    heads.forEach(function (h) { hio.observe(h); });
+  })();
 
   /* ----------------------------------------------------------
      REVEAL ON SCROLL

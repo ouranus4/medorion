@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/main.css?v=20260901a">
+<link rel="stylesheet" href="assets/css/main.css?v=20260901b">
 
 <script type="application/ld+json">
 {
@@ -50,6 +50,26 @@
 </script>
 </head>
 <body>
+
+<!-- ============ ЗАВАНТАЖЕННЯ ============
+     Лежить поверх сторінки, а не замість неї: вміст уже в DOM,
+     тож пошуковики й читалки бачать усе одразу.
+     Знімається сам навіть якщо щось не завантажилось.
+-->
+<div class="loader" id="loader" role="status" aria-label="Сторінка завантажується">
+  <div class="ld-inner">
+    <img class="ld-logo" src="assets/img/logo.png" alt="MedOrion Awards 2026"
+         width="900" height="321" fetchpriority="high">
+    <div class="ld-bar"><i id="ldFill"></i></div>
+    <div class="ld-meta">
+      <span class="ld-cap">2 листопада 2026 · Fairmont Grand Hotel Kyiv</span>
+      <span class="ld-pct" id="ldPct">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- смужка прогресу прокрутки, під бігучим рядком -->
+<div class="scroll-prog" aria-hidden="true"><i id="scrollBar"></i></div>
 
 <!-- ============ ICON SPRITE ============
      Thin-line 24×24 glyphs. Stroke and size come from .ic in the CSS,
@@ -1237,6 +1257,6 @@
   </div>
 </div>
 
-<script src="assets/js/main.js?v=20260901a"></script>
+<script src="assets/js/main.js?v=20260901b"></script>
 </body>
 </html>

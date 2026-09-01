@@ -472,6 +472,101 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
   font-size:12.5px;font-weight:500;color:var(--ruby);
 }
 
+/* ============================================================
+   ЗАВАНТАЖЕННЯ
+   Чорна завіса з вордмарком і рубіновою смугою, яка після
+   заповнення їде вгору й відкриває перший екран.
+   ============================================================ */
+body.loading{overflow:hidden}
+
+.loader{
+  position:fixed;inset:0;z-index:900;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--black);
+  transition:transform 1s cubic-bezier(.76,0,.24,1),
+             opacity .5s ease .45s;
+}
+.loader.gone{transform:translateY(-100%);opacity:0;pointer-events:none}
+/* Аварійний вихід. Якщо скрипт не виконався зовсім, завіса зникне сама
+   через шість секунд — сторінка ніколи не лишиться замкненою. */
+.loader{animation:ldBail 1ms linear 6s forwards}
+@keyframes ldBail{to{opacity:0;visibility:hidden;pointer-events:none}}
+
+.ld-inner{width:min(78vw,420px);text-align:center}
+.ld-logo{
+  width:100%;height:auto;display:block;margin:0 auto 32px;
+  opacity:.94;
+  animation:ldIn 1s var(--ease) both;
+}
+@keyframes ldIn{from{opacity:0;transform:translateY(14px)}to{opacity:.94;transform:none}}
+
+.ld-bar{
+  position:relative;height:2px;border-radius:2px;overflow:hidden;
+  background:rgba(255,255,255,.10);
+}
+.ld-bar i{
+  position:absolute;inset:0 auto 0 0;width:0%;
+  background:linear-gradient(90deg,var(--ruby-deep),var(--ruby) 60%,#FF6B72);
+  box-shadow:0 0 18px rgba(229,9,20,.6);
+  transition:width .35s var(--ease);
+}
+.ld-meta{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  margin-top:14px;
+  font-size:11.5px;font-weight:500;letter-spacing:.04em;
+  color:var(--dim);
+}
+/* на вузькому екрані підпис різався на два рядки й збивав відсоток */
+.ld-cap{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ld-pct{color:var(--grey);font-variant-numeric:tabular-nums;flex-shrink:0}
+.ld-pct::after{content:"%"}
+
+/* Без анімацій завіса не потрібна взагалі — показуємо сторінку одразу. */
+@media (prefers-reduced-motion:reduce){
+  .loader{display:none}
+  body.loading{overflow:auto}
+}
+
+/* ---------- смуга прогресу прокрутки ---------- */
+.scroll-prog{
+  position:fixed;top:var(--ticker-h);left:0;right:0;z-index:129;
+  height:2px;pointer-events:none;
+  background:rgba(255,255,255,.06);
+  opacity:0;transition:opacity .4s var(--ease);
+}
+.scroll-prog.on{opacity:1}
+.scroll-prog i{
+  display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,var(--ruby-deep),var(--ruby));
+  box-shadow:0 0 12px rgba(229,9,20,.55);
+}
+
+/* ---------- поява заголовків ----------
+   Заголовок виїжджає з-під власної маски. Робимо це на цілому
+   елементі, а не по словах: усередині лежить .mute з градієнтом
+   по тексту, і розбиття на слова розірвало б цей градієнт. */
+.fx .sec-head h2{
+  clip-path:inset(0 0 105% 0);
+  transform:translateY(18px);
+  transition:clip-path 1.05s var(--ease),transform 1.05s var(--ease);
+}
+.fx .sec-head h2.on{clip-path:inset(0 0 -25% 0);transform:none}
+@media (prefers-reduced-motion:reduce){
+  .sec-head h2{clip-path:none;transform:none;transition:none}
+}
+
+/* ---------- лінія між блоками промальовується ---------- */
+.fx section + section::before{
+  transform:translateX(-50%) scaleX(0);
+  transform-origin:50% 50%;
+  transition:transform 1.3s var(--ease);
+}
+.fx section.in + section::before,
+.fx section + section.in::before{transform:translateX(-50%) scaleX(1)}
+@media (prefers-reduced-motion:reduce){
+  section + section::before{transform:translateX(-50%) scaleX(1);transition:none}
+}
+
 /* ---------- reveal ---------- */
 .rv{opacity:0;transform:translateY(24px);
     transition:opacity .9s var(--ease),transform .9s var(--ease)}
