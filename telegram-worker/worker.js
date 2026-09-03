@@ -10,7 +10,7 @@
    Треба додати рівно одну змінну (Settings -> Variables and Secrets):
      BOT_TOKEN   тип Secret   токен від @BotFather
 
-   Номер чату й дозволений домен — не секрети, вони нижче в коді.
+   Номер чату й дозволені домени — не секрети, вони нижче в коді.
    Якщо колись зміняться, їх можна або виправити тут, або перекрити
    змінними CHAT_ID / ALLOWED_ORIGIN у тих самих налаштуваннях.
    ============================================================ */
@@ -18,9 +18,14 @@
 // Куди падають заявки — група «MedOrion / заявки»
 const DEFAULT_CHAT_ID = '-1004475490563';
 
-// Звідки дозволено надсилати. Коли зʼявиться власний домен премії,
-// впишіть його сюди замість адреси GitHub Pages.
-const DEFAULT_ORIGIN = 'https://ouranus4.github.io';
+// Звідки дозволено надсилати. Список, а не одна адреса: під час переїзду
+// на власний домен сайт якийсь час живе за кількома адресами одночасно,
+// і з однією дозволеною формa мовчки перестала б приймати заявки.
+const ALLOWED = [
+  'https://www.medorion-awards.com',
+  'https://medorion-awards.com',
+  'https://ouranus4.github.io'
+];
 
 const FIELDS = {
   name:       { label: 'Імʼя',      max: 120 },
@@ -33,7 +38,14 @@ const FIELDS = {
 
 export default {
   async fetch(request, env) {
-    const origin = env.ALLOWED_ORIGIN || DEFAULT_ORIGIN;
+    // Дозволені адреси можна перекрити змінною: кілька через кому.
+    const allowed = (env.ALLOWED_ORIGIN || '').trim()
+      ? env.ALLOWED_ORIGIN.split(',').map(v => v.trim()).filter(Boolean)
+      : ALLOWED;
+    // Браузер порівнює відповідь із власним Origin, тож повертаємо саме його,
+    // якщо він у списку. Інакше — першу дозволену адресу, і запит не пройде.
+    const from = request.headers.get('Origin');
+    const origin = allowed.includes(from) ? from : allowed[0];
     const cors = {
       'Access-Control-Allow-Origin': origin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
