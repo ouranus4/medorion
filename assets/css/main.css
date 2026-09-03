@@ -97,7 +97,12 @@ section.light{
   --graphite:#7B7B82;
   --dim:#8A8A90;
 }
-.light .mute{
+.light /* акцентний фрагмент заголовка. На молочному тлі фірмовий #E50914
+   світлуватий для великого кегля, тож беремо трохи глибший тон. */
+.hot{color:var(--ruby)}
+.light .hot{color:#D2000C}
+
+.mute{
   background:linear-gradient(180deg,#4C4C52 0%,#8E8E95 62%,#A6A6AD 100%);
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;
