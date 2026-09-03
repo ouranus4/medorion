@@ -533,6 +533,33 @@
   })();
 
   /* ----------------------------------------------------------
+     ВІДЕО З YOUTUBE
+     На сторінці лежить лише превʼю. Плеєр підвантажується тільки
+     після кліку: інакше YouTube тягне свої скрипти й куки до того,
+     як людина взагалі вирішила дивитись.
+     ---------------------------------------------------------- */
+  $$('.video-frame[data-yt]').forEach(function (frame) {
+    var id = frame.getAttribute('data-yt');
+    if (!/^[A-Za-z0-9_-]{6,20}$/.test(id)) return;   // тільки схожі на ідентифікатор
+
+    var btn = $('.video-play', frame);
+    if (!btn) return;
+
+    btn.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id +
+              '?autoplay=1&rel=0&modestbranding=1&hl=uk';
+      f.title = 'Репортаж про MedOrion Awards';
+      f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
+      f.setAttribute('allowfullscreen', '');
+      f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      frame.innerHTML = '';
+      frame.appendChild(f);
+      frame.classList.add('playing');
+    });
+  });
+
+  /* ----------------------------------------------------------
      GALLERY: SHOW MORE
      The tail of the mosaic is folded away so the section stays short.
      ---------------------------------------------------------- */

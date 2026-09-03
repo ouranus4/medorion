@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/main.css?v=20260902a">
+<link rel="stylesheet" href="assets/css/main.css?v=20260903a">
 
 <script type="application/ld+json">
 {
@@ -559,31 +559,52 @@
         <span class="more-count">+8</span>
       </button>
     </div>
-    <div class="video-block rv">
-      <div class="video-head">
-        <span class="vh-brand">
-          <span class="vh-mark">
-            <img src="assets/img/channels/novy.png" alt="Новий канал"
-                 width="265" height="265" loading="lazy" decoding="async">
+    <div class="videos">
+      <div class="video-block rv">
+        <div class="video-head">
+          <span class="vh-brand">
+            <span class="vh-mark">
+              <img src="assets/img/channels/novy.png" alt="Новий канал"
+                   width="265" height="265" loading="lazy" decoding="async">
+            </span>
+            <span class="card-tag">Новий канал · «Варто знати»</span>
           </span>
-          <span class="card-tag">Новий канал · «Варто знати»</span>
-        </span>
-        <h3>Сюжет про премію в ефірі Нового каналу</h3>
+          <h3>Сюжет про премію в ефірі Нового каналу</h3>
+        </div>
+        <div class="video-frame" id="videoFrame">
+          <video id="storyVideo" preload="none"
+                 poster="assets/video/novyi-kanal-poster.jpg"
+                 playsinline
+                 width="1280" height="720">
+            <source src="assets/video/novyi-kanal.mp4" type="video/mp4">
+            Ваш браузер не підтримує відтворення відео.
+            <a href="assets/video/novyi-kanal.mp4">Завантажити сюжет</a>
+          </video>
+          <button class="video-play" type="button" id="storyPlay"
+                  aria-label="Дивитися сюжет про премію">
+            <span class="vp-icon" aria-hidden="true"></span>
+            <span class="vp-text">Дивитися сюжет</span>
+          </button>
+        </div>
       </div>
-      <div class="video-frame" id="videoFrame">
-        <video id="storyVideo" preload="none"
-               poster="assets/video/novyi-kanal-poster.jpg"
-               playsinline
-               width="1280" height="720">
-          <source src="assets/video/novyi-kanal.mp4" type="video/mp4">
-          Ваш браузер не підтримує відтворення відео.
-          <a href="assets/video/novyi-kanal.mp4">Завантажити сюжет</a>
-        </video>
-        <button class="video-play" type="button" id="storyPlay"
-                aria-label="Дивитися сюжет про премію">
-          <span class="vp-icon" aria-hidden="true"></span>
-          <span class="vp-text">Дивитися сюжет</span>
-        </button>
+      <div class="video-block rv d1">
+        <div class="video-head">
+          <span class="vh-brand">
+            <span class="vh-mark vh-mark-text">33</span>
+            <span class="card-tag">33 канал · «Мистецтво життя»</span>
+          </span>
+          <h3>Репортаж із церемонії MedOrion Awards</h3>
+        </div>
+        <div class="video-frame" data-yt="BVkve6TW6Us">
+          <img src="assets/img/yt-33kanal.jpg"
+               alt="Кадр репортажу «Мистецтво життя» про MedOrion Awards"
+               width="1280" height="720" loading="lazy" decoding="async">
+          <button class="video-play" type="button"
+                  aria-label="Дивитися репортаж 33 каналу на YouTube">
+            <span class="vp-icon" aria-hidden="true"></span>
+            <span class="vp-text">Дивитися репортаж</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1337,6 +1358,6 @@
   </div>
 </div>
 
-<script src="assets/js/main.js?v=20260902a"></script>
+<script src="assets/js/main.js?v=20260903a"></script>
 </body>
 </html>

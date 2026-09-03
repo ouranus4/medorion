@@ -975,6 +975,26 @@ body.locked{overflow:hidden}
   border-radius:var(--r-card);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
 }
+/* два сюжети поруч; на вузькому — один під одним */
+.videos{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(14px,1.8vw,22px);
+  margin-top:clamp(14px,1.8vw,22px);
+}
+@media (max-width:860px){ .videos{grid-template-columns:1fr} }
+
+/* у 33 каналу немає файлу логотипа — ставимо текстову марку */
+.vh-mark-text{
+  font-weight:700;font-size:17px;letter-spacing:-.02em;
+  color:#0F0F11;line-height:1;
+}
+
+/* превʼю ютуба лежить у тій самій рамці, що й локальне відео */
+.video-frame img{
+  display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;
+}
+.video-frame iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+
 .video-head{
   display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;
   margin-bottom:clamp(14px,1.6vw,18px);
