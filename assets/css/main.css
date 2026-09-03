@@ -1757,22 +1757,21 @@ body.locked{overflow:hidden}
   .chip img{max-height:24px}
   .chip .wordmark{font-size:11.5px}
 
-  /* Блок лауреатів і Ради займав на телефоні 6,5 екрана — це найдовше
-     місце сторінки. Три колонки замість двох стискають його майже вдвічі,
-     обличчя лишаються впізнаваними. */
-  .laureates{grid-template-columns:repeat(3,1fr);gap:7px}
-  .lau-body{padding:10px 9px 12px;gap:4px}
-  .lau-name{font-size:.78rem;line-height:1.2}
-  /* Опис у колонці 108px розганяв картку на пʼять рядків — текст ставав
-     вищим за саме фото. Лишаємо два рядки, решту ховаємо крапками. */
+  /* Дві людини в ряд: обличчя лишаються великими й упізнаваними.
+     Картка виходить близько 165px завширшки. */
+  .laureates{grid-template-columns:repeat(2,1fr);gap:10px}
+  .lau-body{padding:13px 12px 15px;gap:5px}
+  .lau-name{font-size:.94rem;line-height:1.22}
+  /* Опис обмежуємо трьома рядками: інакше картки в одному ряду
+     виходять різної висоти й сітка йде драбинкою. */
   .lau-role{
-    font-size:10.5px;line-height:1.32;flex:none;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    font-size:12px;line-height:1.38;flex:none;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
     overflow:hidden;
   }
-  /* нік і чип на телефоні зайві: іконка на фото вже каже, що є посилання,
-     а хто це — написано в заголовку блоку */
-  .lau-handle,.lau-tag{display:none}
+  /* чип «Експертна рада» повторюється на кожній картці — на телефоні
+     це шум, бо те саме написано в заголовку блоку */
+  .lau-tag{display:none}
   .lau-face{aspect-ratio:1/1}
   .scroll-hint{display:none}
 }
