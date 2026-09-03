@@ -143,19 +143,18 @@ section.milk{background:#F8F6F2;overflow:hidden}
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 16%,#000 80%,transparent);
           mask-image:linear-gradient(180deg,transparent,#000 16%,#000 80%,transparent);
 }
-/* Одна картинка — три витки; секція буває вчетверо вища, тож складаємо
-   стрічку з чотирьох. Разом дванадцять витків: вистачає навіть найдовшій
-   секції плюс запас на сам зсув. */
+/* Плитка самозамкнена по вертикалі, тож стрічка з десяти покриває
+   навіть найдовшу секцію і лишає запас на сам зсув. */
 .dna-strip{
   position:absolute;left:0;top:0;width:100%;
-  opacity:.20;
-  animation:dnaSpin 18s linear infinite;
+  opacity:.30;
+  animation:dnaSpin 26s linear infinite;
   will-change:transform;
 }
 .dna-strip img{width:100%;height:auto;display:block}
-/* Зсув рівно на один виток (1/12 стрічки) показує той самий кадр —
-   спіраль обертається без стрибка на стику. */
-@keyframes dnaSpin{ from{transform:translateY(0)} to{transform:translateY(-8.3333%)} }
+/* Зсув рівно на одну плитку (десяту частину стрічки) показує той самий
+   кадр — спіраль повзе вгору без стрибка на стику. */
+@keyframes dnaSpin{ from{transform:translateY(0)} to{transform:translateY(-10%)} }
 @media (prefers-reduced-motion:reduce){ .dna-strip{animation:none} }
 section.milk > .wrap{position:relative;z-index:1}
 
@@ -163,7 +162,7 @@ section.milk > .wrap{position:relative;z-index:1}
   /* На телефоні спіраль неминуче опиняється під текстом, тож світлішає
      майже вдвічі й зсувається до краю. */
   .dna-bg{width:62%;right:-16%}
-  .dna-strip{opacity:.15}
+  .dna-strip{opacity:.22}
 }
 
 /* a light band sits against black on both sides — no hairline needed */
