@@ -235,6 +235,38 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
    і в центрі підіймається статуетка. Усе на CSS-переходах: JS лише
    вимірює довжину ліній і додає клас, коли блок входить у кадр.
    ============================================================ */
+/* ============================================================
+   ПАРТНЕРИ СЕЗОНУ 2025
+   Стіна логотипів. Кожен лежить на власній плашці: майже всі на
+   білій, а ті, що намальовані світлим по прозорому, — на темній,
+   інакше вони просто зникають.
+   ============================================================ */
+.ptiles{
+  display:grid;list-style:none;margin:0;padding:0;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:clamp(8px,.9vw,12px);
+}
+.ptile{
+  display:flex;align-items:center;justify-content:center;
+  aspect-ratio:3/2;padding:clamp(12px,1.3vw,20px);
+  background:#fff;border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease);
+}
+.ptile-dark{background:#101014;border-color:rgba(255,255,255,.14)}
+.ptile img{
+  max-width:100%;max-height:100%;width:auto;height:auto;
+  object-fit:contain;display:block;
+}
+.ptile:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 34px rgba(0,0,0,.5),0 0 22px rgba(229,9,20,.16);
+}
+
+@media (max-width:1080px){ .ptiles{grid-template-columns:repeat(5,minmax(0,1fr))} }
+@media (max-width:860px){  .ptiles{grid-template-columns:repeat(4,minmax(0,1fr))} }
+@media (max-width:560px){  .ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px} }
+
 /* ---------- expert board ----------
    Рада живе всередині блоку лауреатів, тож її треба відбити:
    волосяна лінія на всю ширину і власний підзаголовок. */
