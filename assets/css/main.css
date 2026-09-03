@@ -162,11 +162,34 @@ section.ruby{
   -webkit-text-fill-color:transparent;
 }
 .ruby .hot{color:#FFC9CD}
-/* картки на червоному мають лежати на власній темній підкладці,
-   інакше текст у них губиться на світлішій верхівці градієнта */
-.ruby .card{background:rgba(20,1,4,.30);border-color:rgba(255,255,255,.16)}
-.ruby .card:hover{background:rgba(20,1,4,.42)}
-.ruby .card::after{display:none}
+/* Картки на червоному — білі. Усередині них увесь набір токенів
+   перемикається на світлий, тож заголовки, текст, чип і підпис
+   беруть кольори з паперової смуги без жодної окремої правки. */
+.ruby .card{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.07);
+  box-shadow:0 1px 2px rgba(0,0,0,.10),0 18px 44px rgba(60,0,4,.30);
+  /* під суцільним білим розмиття нічого не дає, лише вантажить GPU */
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  --white:#0A0A0C;
+  --grey:#55555A;
+  --graphite:#7B7B82;
+  --dim:#8A8A90;
+  --stroke:rgba(0,0,0,.10);
+  --glass:#FFFFFF;
+  --ruby:#D2000C;
+  color:#55555A;
+}
+.ruby .card:hover{
+  background:#fff;
+  border-color:rgba(0,0,0,.07);
+  box-shadow:0 1px 2px rgba(0,0,0,.10),0 26px 60px rgba(60,0,4,.40);
+}
+.ruby .card-icon{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.10)}
+.ruby .card-tag{background:transparent;border-color:rgba(0,0,0,.12);color:#6E6E75}
+.ruby .card-note{color:#D2000C}
+/* підсвітка від курсора розрахована на чорне тло — на білому лише бруднить */
+.ruby .card::before,.ruby .card::after{display:none}
 .ruby .btn{background:#170104;border-color:rgba(255,255,255,.22)}
 .ruby .btn-ruby,.ruby .btn-white{--star-light:#FFFFFF;--star-hot:#FFD9DC}
 .ruby + section::before,
@@ -200,17 +223,18 @@ section.ruby > .wrap{position:relative;z-index:1}
 }
 @media (prefers-reduced-motion:reduce){ .heart-bg img{animation:none} }
 @media (max-width:860px){
-  /* На телефоні праворуч місця немає — серце йде по центру, за колонку
-     карток. Крізь їхнє напівпрозоре скло воно читається як світіння. */
-  .heart-bg{width:104%;left:50%;right:auto;transform:translate(-50%,-50%)}
-  .heart-bg img{opacity:.17}
+  /* Картки стали білими й непрозорими, тож за ними серця вже не видно.
+     Виносимо його вгору секції, де карток немає, — велике й зрізане
+     правим краєм, ніби визирає збоку. */
+  .heart-bg{top:7%;right:-36%;left:auto;width:118%;transform:none}
+  .heart-bg img{opacity:.16}
   @keyframes heartBeat{
-    0%   {transform:scale(1);     opacity:.16}
-    7%   {transform:scale(1.055); opacity:.24}
-    14%  {transform:scale(1.008); opacity:.17}
-    22%  {transform:scale(1.032); opacity:.20}
-    32%  {transform:scale(1);     opacity:.16}
-    100% {transform:scale(1);     opacity:.16}
+    0%   {transform:scale(1);     opacity:.15}
+    7%   {transform:scale(1.055); opacity:.23}
+    14%  {transform:scale(1.008); opacity:.16}
+    22%  {transform:scale(1.032); opacity:.19}
+    32%  {transform:scale(1);     opacity:.15}
+    100% {transform:scale(1);     opacity:.15}
   }
 }
 
