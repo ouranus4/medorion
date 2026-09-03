@@ -668,6 +668,8 @@
       img.alt = slot.getAttribute('data-alt') || '';
       img.loading = 'lazy';
       img.decoding = 'async';
+      img.width = probe.naturalWidth;
+      img.height = probe.naturalHeight;
       slot.appendChild(img);
       slot.classList.add('has-photo');
       var ic = $('.ic', slot);
@@ -691,6 +693,10 @@
       img.alt = '';
       img.loading = 'lazy';
       img.decoding = 'async';
+      // розміри беремо з уже завантаженої проби: без них браузер не знає
+      // висоту наперед і макет сіпається, коли фото стає на місце
+      img.width = probe.naturalWidth;
+      img.height = probe.naturalHeight;
       face.appendChild(img);
       var mono = $('.monogram', face);
       if (mono) mono.style.display = 'none';
