@@ -188,6 +188,53 @@ section.ruby{
 .ruby .card-icon{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.10)}
 .ruby .card-tag{background:transparent;border-color:rgba(0,0,0,.12);color:#6E6E75}
 .ruby .card-note{color:#D2000C}
+
+/* Портрети та картки Ради на червоному лишаються темними: під ними фото,
+   і біла підкладка зʼїла б їхній контраст. */
+.ruby .lau,.ruby .board-card{background:rgba(18,1,4,.34);border-color:rgba(255,255,255,.16)}
+.ruby .lau:hover,.ruby .board-card:hover{background:rgba(18,1,4,.48)}
+.ruby .lau-face{
+  background:
+    radial-gradient(85% 70% at 50% 16%,rgba(255,255,255,.10) 0%,transparent 64%),
+    linear-gradient(180deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.02) 100%);
+}
+.ruby .split-rule{background:linear-gradient(90deg,transparent,rgba(255,255,255,.26) 18%,rgba(255,255,255,.26) 82%,transparent)}
+
+/* ---------- нейрон, що пульсує ----------
+   Знімок розкладено на два шари. Структура — тепло-білим: бірюза з
+   оригіналу чужа палітрі премії. Ядро окремо, і саме воно бʼється. */
+.pulse-bg{
+  position:absolute;top:0;right:-9%;z-index:0;
+  width:min(54%,600px);aspect-ratio:1/1;
+  pointer-events:none;
+  -webkit-mask-image:radial-gradient(closest-side,#000 64%,transparent 100%);
+          mask-image:radial-gradient(closest-side,#000 64%,transparent 100%);
+}
+.pulse-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.pulse-web{opacity:.32}
+.pulse-core{
+  opacity:.45;
+  mix-blend-mode:screen;
+  filter:drop-shadow(0 0 20px rgba(255,150,40,.55));
+  /* ядро лежить не в центрі кадру — інакше воно «їздило» б під час удару */
+  transform-origin:61.3% 49.9%;
+  animation:corePulse 1.6s cubic-bezier(.4,0,.35,1) infinite;
+  will-change:transform,opacity;
+}
+@keyframes corePulse{
+  0%   {opacity:.42;transform:scale(.97)}
+  9%   {opacity:1;   transform:scale(1.07)}
+  24%  {opacity:.52; transform:scale(.99)}
+  36%  {opacity:.80; transform:scale(1.035)}
+  54%  {opacity:.42; transform:scale(.97)}
+  100% {opacity:.42; transform:scale(.97)}
+}
+@media (prefers-reduced-motion:reduce){ .pulse-core{animation:none;opacity:.7} }
+@media (max-width:860px){
+  .pulse-bg{width:112%;right:-28%}
+  .pulse-web{opacity:.24}
+}
+
 /* підсвітка від курсора розрахована на чорне тло — на білому лише бруднить */
 .ruby .card::before,.ruby .card::after{display:none}
 .ruby .btn{background:#170104;border-color:rgba(255,255,255,.22)}
