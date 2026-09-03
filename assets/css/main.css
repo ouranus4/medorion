@@ -241,46 +241,34 @@ h4{font-size:1rem;letter-spacing:-.02em;font-weight:600}
    білій, а ті, що намальовані світлим по прозорому, — на темній,
    інакше вони просто зникають.
    ============================================================ */
-.ptiles{
-  display:grid;list-style:none;margin:0;padding:0;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:clamp(10px,1.1vw,14px);
+/* Ярусами, як на офіційному банері премії: головні партнери великі
+   згори, далі дрібніші й густіші ряди. Логотипи лежать просто на тлі,
+   без плашок — тому кожен зведено до білого силуету. Інакше знаки,
+   намальовані темним, на чорному тлі просто зникли б. */
+.pwall{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  list-style:none;margin:0;padding:0;
 }
-/* Головний партнер займає дві клітинки в ширину, але лишається тієї ж
-   висоти, що й сусіди: без цього aspect-ratio 3/2 подвоїв би і висоту,
-   і в плашці зяяла б порожнеча. */
-.ptile.wide{grid-column:span 2;aspect-ratio:3.1/1}
-.ptile{
-  display:flex;align-items:center;justify-content:center;
-  aspect-ratio:3/2;padding:clamp(12px,1.3vw,20px);
-  background:#fff;border-radius:14px;
-  border:1px solid rgba(255,255,255,.10);
-  transition:transform .4s var(--ease),box-shadow .4s var(--ease);
+.pwall + .pwall{margin-top:clamp(24px,3.2vw,50px)}
+.pwall li{display:flex;align-items:center;justify-content:center;height:var(--h)}
+/* висоту задає ряд, ширину обмежуємо окремо: інакше довгий вордмарк
+   на тій самій висоті займав би пів ряду */
+.pwall img{
+  height:100%;width:auto;max-width:var(--w);
+  object-fit:contain;display:block;opacity:.88;
+  transition:opacity .4s var(--ease),transform .4s var(--ease);
 }
-.ptile-dark{background:#101014;border-color:rgba(255,255,255,.14)}
-.ptile-red{background:#C8121C;border-color:rgba(255,255,255,.18)}
-.ptile img{
-  max-width:100%;max-height:100%;width:auto;height:auto;
-  object-fit:contain;display:block;
-}
-.ptile:hover{
-  transform:translateY(-3px);
-  box-shadow:0 14px 34px rgba(0,0,0,.5),0 0 22px rgba(229,9,20,.16);
-}
+.pwall li:hover img{opacity:1;transform:scale(1.07)}
 
-@media (max-width:860px){ .ptiles{grid-template-columns:repeat(4,minmax(0,1fr))} }
+.pw-a{gap:clamp(26px,4vw,64px);   --h:clamp(44px,5.6vw,76px); --w:clamp(150px,22vw,280px)}
+.pw-b{gap:clamp(20px,3vw,46px);   --h:clamp(30px,3.8vw,50px); --w:clamp(110px,15vw,200px)}
+.pw-c{gap:clamp(15px,2.1vw,30px) clamp(20px,2.8vw,42px);
+                                  --h:clamp(19px,2.3vw,31px); --w:clamp(74px,10vw,140px)}
 
-/* Телефон: щільна сітка. З двома колонками стіна розтягувалась на пʼять
-   екранів — гортати її ніхто б не став. Три колонки, менші поля й
-   проміжки скорочують блок удвічі, а логотипи лишаються читабельними. */
 @media (max-width:560px){
-  .ptiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-  .ptile{aspect-ratio:4/3;padding:9px;border-radius:11px}
-  .ptile.wide{grid-column:span 3;aspect-ratio:4.6/1}
-}
-@media (max-width:380px){
-  .ptiles{gap:5px}
-  .ptile{padding:7px}
+  .pw-a{gap:22px;--h:40px;--w:190px}
+  .pw-b{gap:18px;--h:27px;--w:130px}
+  .pw-c{gap:13px 17px;--h:17px;--w:82px}
 }
 
 /* ---------- expert board ----------
