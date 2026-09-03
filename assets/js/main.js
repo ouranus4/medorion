@@ -533,6 +533,58 @@
   })();
 
   /* ----------------------------------------------------------
+     КАРУСЕЛЬ У КАРТЦІ
+     Смуга гортається сама по собі — це звичайна горизонтальна
+     прокрутка з прилипанням. Тут лише додаємо стрілки й крапки,
+     тож без JS карусель не ламається, а просто лишається без них.
+     ---------------------------------------------------------- */
+  $$('[data-shots]').forEach(function (box) {
+    var track = $('.shots-track', box);
+    if (!track) return;
+    var slides = $$('img', track);
+    if (slides.length < 2) return;          // один кадр — гортати нічого
+
+    var dots = document.createElement('div');
+    dots.className = 'shots-dots';
+    slides.forEach(function () { dots.appendChild(document.createElement('i')); });
+    box.appendChild(dots);
+
+    function nav(dir, label) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'shots-nav ' + (dir < 0 ? 'prev' : 'next');
+      b.setAttribute('aria-label', label);
+      b.addEventListener('click', function () {
+        track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+      });
+      box.appendChild(b);
+      return b;
+    }
+    var prev = nav(-1, 'Попереднє фото');
+    var next = nav(1, 'Наступне фото');
+    box.classList.add('has-nav');
+
+    var ticking = false;
+    function paint() {
+      ticking = false;
+      var i = Math.round(track.scrollLeft / track.clientWidth);
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      dots.querySelectorAll('i').forEach(function (d, n) {
+        d.classList.toggle('on', n === i);
+      });
+      prev.disabled = i === 0;
+      next.disabled = i === slides.length - 1;
+    }
+    track.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(paint);
+    }, { passive: true });
+    window.addEventListener('resize', paint, { passive: true });
+    paint();
+  });
+
+  /* ----------------------------------------------------------
      ВІДЕО З YOUTUBE
      На сторінці лежить лише превʼю. Плеєр підвантажується тільки
      після кліку: інакше YouTube тягне свої скрипти й куки до того,
