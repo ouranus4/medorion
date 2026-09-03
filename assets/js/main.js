@@ -535,8 +535,9 @@
   /* ----------------------------------------------------------
      КАРУСЕЛЬ У КАРТЦІ
      Смуга гортається сама по собі — це звичайна горизонтальна
-     прокрутка з прилипанням. Тут лише додаємо стрілки й крапки,
-     тож без JS карусель не ламається, а просто лишається без них.
+     прокрутка з прилипанням. Тут додаємо те, що показує людині,
+     що гортати взагалі можна: лічильник, крапки, стрілки й підказку.
+     Без JS карусель не ламається, просто лишається без них.
      ---------------------------------------------------------- */
   $$('[data-shots]').forEach(function (box) {
     var track = $('.shots-track', box);
@@ -544,10 +545,21 @@
     var slides = $$('img', track);
     if (slides.length < 2) return;          // один кадр — гортати нічого
 
+    var count = document.createElement('div');
+    count.className = 'shots-count';
+    box.appendChild(count);
+
     var dots = document.createElement('div');
     dots.className = 'shots-dots';
-    slides.forEach(function () { dots.appendChild(document.createElement('i')); });
+    var inner = document.createElement('span');
+    slides.forEach(function () { inner.appendChild(document.createElement('i')); });
+    dots.appendChild(inner);
     box.appendChild(dots);
+
+    var hint = document.createElement('div');
+    hint.className = 'shots-hint';
+    hint.textContent = 'Гортайте →';
+    box.appendChild(hint);
 
     function nav(dir, label) {
       var b = document.createElement('button');
@@ -555,25 +567,31 @@
       b.className = 'shots-nav ' + (dir < 0 ? 'prev' : 'next');
       b.setAttribute('aria-label', label);
       b.addEventListener('click', function () {
-        track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+        box.classList.add('touched');
+        track.scrollBy({ left: dir * step(), behavior: 'smooth' });
       });
       box.appendChild(b);
       return b;
     }
+    // кадри вужчі за смугу (сусідній визирає), тож крок беремо з самого кадру
+    function step() {
+      return slides[0].getBoundingClientRect().width + 8;
+    }
     var prev = nav(-1, 'Попереднє фото');
     var next = nav(1, 'Наступне фото');
-    box.classList.add('has-nav');
 
     var ticking = false;
     function paint() {
       ticking = false;
-      var i = Math.round(track.scrollLeft / track.clientWidth);
+      var i = Math.round(track.scrollLeft / step());
       i = Math.max(0, Math.min(slides.length - 1, i));
-      dots.querySelectorAll('i').forEach(function (d, n) {
+      inner.querySelectorAll('i').forEach(function (d, n) {
         d.classList.toggle('on', n === i);
       });
+      count.textContent = (i + 1) + ' / ' + slides.length;
       prev.disabled = i === 0;
       next.disabled = i === slides.length - 1;
+      if (track.scrollLeft > 8) box.classList.add('touched');
     }
     track.addEventListener('scroll', function () {
       if (ticking) return;
@@ -582,6 +600,9 @@
     }, { passive: true });
     window.addEventListener('resize', paint, { passive: true });
     paint();
+
+    // підказка зникає й сама, щоб не миготіла вічно
+    setTimeout(function () { box.classList.add('touched'); }, 6000);
   });
 
   /* ----------------------------------------------------------
