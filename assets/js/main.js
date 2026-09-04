@@ -515,6 +515,125 @@
      нам треба фон окремої секції, тож і розмір, і курсор рахуються
      від самого полотна.
      ---------------------------------------------------------- */
+  /* ----------------------------------------------------------
+     ЗОРЯНЕ ПОЛЕ
+     Знову React-компонент, знову без React. Оригінал щокадру
+     заливає полотно власним фоном — нам це не підходить: під ним
+     своє тло секції, тож просто чистимо прозорим.
+     ---------------------------------------------------------- */
+  (function starfield() {
+    $$('canvas.starfield').forEach(setup);
+
+    function setup(canvas) {
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      var COUNT = parseInt(canvas.getAttribute('data-count'), 10) || 260;
+      var SPEED = parseFloat(canvas.getAttribute('data-speed')) || 0.55;
+      var RATIO = 256;                     // фокусна: чим більша, тим ширше розліт
+      var stars = [];
+      var w = 0, h = 0, cx = 0, cy = 0, depth = 0, dpr = 1;
+
+      function dens() {
+        return window.matchMedia('(max-width: 860px)').matches
+          ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+      }
+
+      function seed() {
+        stars = new Array(COUNT);
+        for (var i = 0; i < COUNT; i++) {
+          stars[i] = {
+            x: Math.random() * w * 2 - w,
+            y: Math.random() * h * 2 - h,
+            z: Math.random() * depth,
+            px: 0, py: 0, ok: false
+          };
+        }
+      }
+
+      function size() {
+        var r = canvas.getBoundingClientRect();
+        if (!r.width || !r.height) return false;
+        var d = dens();
+        var nw = Math.round(r.width * d), nh = Math.round(r.height * d);
+        if (nw !== w || nh !== h || d !== dpr) {
+          w = nw; h = nh; dpr = d;
+          canvas.width = w; canvas.height = h;
+          cx = w / 2; cy = h / 2;
+          depth = (w + h) / 2;
+          // на телефоні зірок треба менше: площа менша, а кожна лінія
+          // так само коштує окремого штриха
+          COUNT = d === 1 ? Math.round(
+                    (parseInt(canvas.getAttribute('data-count'), 10) || 260) * 0.45)
+                  : (parseInt(canvas.getAttribute('data-count'), 10) || 260);
+          seed();
+        }
+        return true;
+      }
+
+      function step() {
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          s.px = cx + (s.x / s.z) * RATIO;
+          s.py = cy + (s.y / s.z) * RATIO;
+          s.ok = true;
+          s.z -= SPEED * dpr;
+          // зірка пролетіла повз — відроджуємо її в глибині, інакше
+          // поле за пару хвилин просто спорожніє
+          if (s.z < 1) {
+            s.z = depth;
+            s.x = Math.random() * w * 2 - w;
+            s.y = Math.random() * h * 2 - h;
+            s.ok = false;
+          }
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.strokeStyle = 'rgba(255,236,238,0.9)';
+        ctx.lineCap = 'round';
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          if (!s.ok) continue;
+          var nx = cx + (s.x / s.z) * RATIO;
+          var ny = cy + (s.y / s.z) * RATIO;
+          if (nx < 0 || nx > w || ny < 0 || ny > h) continue;
+          // мінімальна товщина й прозорість: без них далекі зірки
+          // перетворюються на невидимі волосини і поле здається порожнім
+          var near = 1 - s.z / depth;
+          ctx.lineWidth = (0.7 + near * 2.2) * dpr;
+          ctx.globalAlpha = 0.28 + 0.72 * near;
+          ctx.beginPath();
+          ctx.moveTo(s.px, s.py);
+          ctx.lineTo(nx, ny);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+        canvas.classList.add('lit');
+      }
+
+      if (!size()) return;
+      step(); draw();
+      if (reduceMotion) return;
+
+      var raf = 0, onScreen = false;
+      function loop() { raf = requestAnimationFrame(loop); if (size()) { step(); draw(); } }
+      function play() { if (!raf && onScreen && !document.hidden) loop(); }
+      function stop() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          onScreen = es[0].isIntersecting;
+          onScreen ? play() : stop();
+        }, { threshold: 0 }).observe(canvas);
+      } else { onScreen = true; play(); }
+      document.addEventListener('visibilitychange', function () {
+        document.hidden ? stop() : play();
+      });
+    }
+  })();
+
+
   (function neuroNoise() {
     var canvases = $$('canvas.neuro');
     if (!canvases.length) return;
@@ -682,6 +801,17 @@
         document.hidden ? stop() : play();
       });
       window.addEventListener('resize', function () { w = 0; h = 0; });
+
+      // На сторінці чотири полотна WebGL, і старіші телефони мають межу
+      // одночасних контекстів: коли її досягнуто, браузер забирає
+      // найстаріший. Без цього обробника на його місці лишився б
+      // застиглий кадр; так шар просто згасає, і секція виглядає як
+      // задумано, тільки без анімації.
+      canvas.addEventListener('webglcontextlost', function (e) {
+        e.preventDefault();
+        stop();
+        canvas.classList.remove('lit');
+      });
     }
   })();
 

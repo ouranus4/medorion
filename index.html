@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/main.css?v=20260904i">
+<link rel="stylesheet" href="assets/css/main.css?v=20260904l">
 
 <script type="application/ld+json">
 {
@@ -449,10 +449,6 @@
   </picture>
   <div class="space-scrim" aria-hidden="true"></div>
   <canvas class="neuro" data-color="1,0.40,0.46" aria-hidden="true"></canvas>
-  <div class="heart-bg" aria-hidden="true">
-    <img src="assets/img/heart.webp?v=2" alt="" width="394" height="470"
-         loading="lazy" decoding="async">
-  </div>
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow rv">Кому це потрібно</p>
@@ -968,7 +964,13 @@
 </section>
 
 <!-- ============ 4б. ЛАУРЕАТИ ТА РЕЗИДЕНТИ ============ -->
-<section id="residents-band" class="ruby">
+<section id="residents-band" class="space space-hot">
+  <picture class="space-bg" aria-hidden="true">
+    <source srcset="assets/img/space-bg.webp" type="image/webp">
+    <img src="assets/img/space-bg.jpg" alt="" width="1080" height="1350" loading="lazy" decoding="async">
+  </picture>
+  <div class="space-scrim" aria-hidden="true"></div>
+  <canvas class="neuro" data-color="1,0.40,0.46" aria-hidden="true"></canvas>
   <div class="wrap">
 
     <div class="sec-head" id="residents">
@@ -1269,7 +1271,8 @@
 
 
 <!-- ============ ЗАСНОВНИЦЯ ============ -->
-<section id="founder" class="sky">
+<section id="founder" class="sky has-neuro">
+  <canvas class="starfield" data-count="320" data-speed="1.1" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="sec-head">
       <p class="eyebrow rv">Організаторка премії</p>
@@ -1581,6 +1584,6 @@
   </div>
 </div>
 
-<script src="assets/js/main.js?v=20260904i"></script>
+<script src="assets/js/main.js?v=20260904l"></script>
 </body>
 </html>
