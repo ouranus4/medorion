@@ -245,8 +245,11 @@ section.ruby::before{display:none}
    вони течуть і тягнуться за курсором. Колір уже помножений на альфу,
    тож полотно лягає на секцію без жодного режиму накладання. */
 .neuro{
-  position:absolute;inset:0;z-index:2;
-  width:100%;height:100%;display:block;
+  /* Полотно не на всю секцію, а смугою вгорі. Блок Ради заввишки з три
+     екрани, і шейдер на всю його площу телефон просто не встигає
+     малювати — анімація перетворюється на нерухому картинку. */
+  position:absolute;top:0;left:0;right:0;z-index:2;
+  height:min(100%,900px);display:block;
   pointer-events:none;
   opacity:0;transition:opacity 1.4s var(--ease);
   /* Нитки виходять яскраві й непередбачувані: наліво, де завжди стоїть
@@ -256,11 +259,13 @@ section.ruby::before{display:none}
 }
 .neuro.lit{opacity:.46}
 @media (max-width:860px){
-  .neuro.lit{opacity:.34}
   .neuro{
-    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.35) 0%,#000 40%,#000 100%);
-            mask-image:linear-gradient(180deg,rgba(0,0,0,.35) 0%,#000 40%,#000 100%);
+    height:min(100%,620px);
+    /* згори притлумлено під заголовок, знизу згасає у фон секції */
+    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.30) 0%,#000 34%,#000 64%,transparent 100%);
+            mask-image:linear-gradient(180deg,rgba(0,0,0,.30) 0%,#000 34%,#000 64%,transparent 100%);
   }
+  .neuro.lit{opacity:.52}
 }
 
 /* ---------- серце на тлі ----------

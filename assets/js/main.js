@@ -607,17 +607,23 @@
       var col = (canvas.getAttribute('data-color') || '1,0.42,0.48')
         .split(',').map(parseFloat);
       gl.uniform3f(uColor, col[0], col[1], col[2]);
-      gl.uniform1f(uSpeed, parseFloat(canvas.getAttribute('data-speed')) || 0.00035);
+      gl.uniform1f(uSpeed, parseFloat(canvas.getAttribute('data-speed')) || 0.0008);
 
-      // Шейдер із пʼятнадцятьма шарами — не той ефект, за який варто
-      // платити ретиною: на щільність 1 різниці не видно, а кадр удвічі
-      // дешевший.
-      var DPR = Math.min(window.devicePixelRatio || 1, 1.25);
+      // Шейдер із пʼятнадцятьма шарами коштує на піксель дорого, а на
+      // телефоні кожен піксель іще й повільніший. Там малюємо один до
+      // одного: різниці не видно, зате кадр устигає намалюватись.
+      // Щільність перераховуємо щоразу, а не один раз на старті: планшет
+      // можна повернути, і тоді ширина перетне межу вже після запуску.
+      function dpr() {
+        return window.matchMedia('(max-width: 860px)').matches
+          ? 1 : Math.min(window.devicePixelRatio || 1, 1.25);
+      }
       var w = 0, h = 0;
       function size() {
         var r = canvas.getBoundingClientRect();
         if (!r.width || !r.height) return false;
-        var nw = Math.round(r.width * DPR), nh = Math.round(r.height * DPR);
+        var d = dpr();
+        var nw = Math.round(r.width * d), nh = Math.round(r.height * d);
         if (nw !== w || nh !== h) {
           w = nw; h = nh;
           canvas.width = w; canvas.height = h;
