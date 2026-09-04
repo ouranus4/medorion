@@ -240,21 +240,27 @@ section.ruby::before{display:none}
 /* підсвітка від курсора розрахована на чорне тло — на білому лише бруднить */
 .cards-paper .card::before,.cards-paper .card::after{display:none}
 
-/* ---------- нейрон, що пульсує ----------
-   Знімок розкладено на два шари. Структура — тепло-білим: бірюза з
-   оригіналу чужа палітрі премії. Ядро окремо, і саме воно бʼється. */
-.pulse-bg{
-  position:absolute;top:0;right:-9%;z-index:2;
-  width:min(54%,600px);aspect-ratio:1/1;
+/* ---------- нейронний шум ----------
+   Живий шейдер замість фотографії нейрона: ті самі нитки світла, але
+   вони течуть і тягнуться за курсором. Колір уже помножений на альфу,
+   тож полотно лягає на секцію без жодного режиму накладання. */
+.neuro{
+  position:absolute;inset:0;z-index:2;
+  width:100%;height:100%;display:block;
   pointer-events:none;
-  -webkit-mask-image:radial-gradient(closest-side,#000 64%,transparent 100%);
-          mask-image:radial-gradient(closest-side,#000 64%,transparent 100%);
+  opacity:0;transition:opacity 1.4s var(--ease);
+  /* Нитки виходять яскраві й непередбачувані: наліво, де завжди стоїть
+     заголовок, їх не пускаємо — інакше вони перекреслюють текст. */
+  -webkit-mask-image:linear-gradient(96deg,transparent 0%,rgba(0,0,0,.22) 26%,#000 66%);
+          mask-image:linear-gradient(96deg,transparent 0%,rgba(0,0,0,.22) 26%,#000 66%);
 }
-.pulse-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.pulse-web{opacity:.34}
+.neuro.lit{opacity:.46}
 @media (max-width:860px){
-  .pulse-bg{width:112%;right:-28%}
-  .pulse-web{opacity:.24}
+  .neuro.lit{opacity:.34}
+  .neuro{
+    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.35) 0%,#000 40%,#000 100%);
+            mask-image:linear-gradient(180deg,rgba(0,0,0,.35) 0%,#000 40%,#000 100%);
+  }
 }
 
 /* ---------- серце на тлі ----------

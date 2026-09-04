@@ -508,6 +508,179 @@
   })();
 
   /* ----------------------------------------------------------
+     НЕЙРОННИЙ ШУМ
+     Той самий шейдер, що в React-компоненті neural-noise, але без
+     React: у цьому проєкті його немає — тут чистий HTML і vanilla JS.
+     Оригінал малює на весь екран через fixed і window.innerWidth;
+     нам треба фон окремої секції, тож і розмір, і курсор рахуються
+     від самого полотна.
+     ---------------------------------------------------------- */
+  (function neuroNoise() {
+    var canvases = $$('canvas.neuro');
+    if (!canvases.length) return;
+    canvases.forEach(setup);
+
+    function setup(canvas) {
+      var gl = canvas.getContext('webgl', { antialias: false, depth: false })
+            || canvas.getContext('experimental-webgl');
+      if (!gl) return;
+
+      var VERT =
+        'precision mediump float;' +
+        'varying vec2 vUv;' +
+        'attribute vec2 a_position;' +
+        'void main(){ vUv = 0.5 * (a_position + 1.0);' +
+        '  gl_Position = vec4(a_position, 0.0, 1.0); }';
+
+      var FRAG =
+        'precision mediump float;' +
+        'varying vec2 vUv;' +
+        'uniform float u_time;' +
+        'uniform float u_ratio;' +
+        'uniform vec2 u_pointer;' +
+        'uniform vec3 u_color;' +
+        'uniform float u_speed;' +
+        'vec2 rot(vec2 uv, float th){' +
+        '  return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv; }' +
+        'float shape(vec2 uv, float t, float p){' +
+        '  vec2 acc = vec2(0.0); vec2 res = vec2(0.0); float scale = 8.0;' +
+        '  for (int j = 0; j < 15; j++) {' +
+        '    uv = rot(uv, 1.0); acc = rot(acc, 1.0);' +
+        '    vec2 layer = uv * scale + float(j) + acc - t;' +
+        '    acc += sin(layer) + 2.4 * p;' +
+        '    res += (0.5 + 0.5 * cos(layer)) / scale;' +
+        '    scale *= 1.2;' +
+        '  }' +
+        '  return res.x + res.y; }' +
+        'void main(){' +
+        '  vec2 uv = 0.5 * vUv; uv.x *= u_ratio;' +
+        '  vec2 pt = vUv - u_pointer; pt.x *= u_ratio;' +
+        '  float p = clamp(length(pt), 0.0, 1.0);' +
+        '  p = 0.5 * pow(1.0 - p, 2.0);' +
+        '  float t = u_speed * u_time;' +
+        '  float n = shape(uv, t, p);' +
+        '  n = 1.2 * pow(n, 3.0);' +
+        '  n += pow(n, 10.0);' +
+        '  n = max(0.0, n - 0.5);' +
+        '  n *= (1.0 - length(vUv - 0.5));' +
+           // колір уже помножений на альфу — саме так канвас і компонує
+        '  gl_FragColor = vec4(u_color * n, n); }';
+
+      function compile(type, src) {
+        var s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+          console.error('[MedOrion] neuro shader:', gl.getShaderInfoLog(s));
+          return null;
+        }
+        return s;
+      }
+      var vs = compile(gl.VERTEX_SHADER, VERT);
+      var fs = compile(gl.FRAGMENT_SHADER, FRAG);
+      if (!vs || !fs) return;
+
+      var prog = gl.createProgram();
+      gl.attachShader(prog, vs);
+      gl.attachShader(prog, fs);
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.error('[MedOrion] neuro program:', gl.getProgramInfoLog(prog));
+        return;
+      }
+      gl.useProgram(prog);
+
+      var buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+      var loc = gl.getAttribLocation(prog, 'a_position');
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+      var uTime = gl.getUniformLocation(prog, 'u_time');
+      var uRatio = gl.getUniformLocation(prog, 'u_ratio');
+      var uPtr = gl.getUniformLocation(prog, 'u_pointer');
+      var uColor = gl.getUniformLocation(prog, 'u_color');
+      var uSpeed = gl.getUniformLocation(prog, 'u_speed');
+
+      var col = (canvas.getAttribute('data-color') || '1,0.42,0.48')
+        .split(',').map(parseFloat);
+      gl.uniform3f(uColor, col[0], col[1], col[2]);
+      gl.uniform1f(uSpeed, parseFloat(canvas.getAttribute('data-speed')) || 0.00035);
+
+      // Шейдер із пʼятнадцятьма шарами — не той ефект, за який варто
+      // платити ретиною: на щільність 1 різниці не видно, а кадр удвічі
+      // дешевший.
+      var DPR = Math.min(window.devicePixelRatio || 1, 1.25);
+      var w = 0, h = 0;
+      function size() {
+        var r = canvas.getBoundingClientRect();
+        if (!r.width || !r.height) return false;
+        var nw = Math.round(r.width * DPR), nh = Math.round(r.height * DPR);
+        if (nw !== w || nh !== h) {
+          w = nw; h = nh;
+          canvas.width = w; canvas.height = h;
+          gl.viewport(0, 0, w, h);
+          gl.uniform1f(uRatio, w / h);
+        }
+        return true;
+      }
+
+      // курсор рахуємо від полотна, а не від вікна: секція займає
+      // лише частину сторінки
+      var px = 0.5, py = 0.5, tx = 0.5, ty = 0.5;
+      function aim(cx, cy) {
+        var r = canvas.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        tx = (cx - r.left) / r.width;
+        ty = 1 - (cy - r.top) / r.height;
+      }
+      window.addEventListener('pointermove', function (e) { aim(e.clientX, e.clientY); },
+        { passive: true });
+      window.addEventListener('touchmove', function (e) {
+        if (e.targetTouches[0]) aim(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+      }, { passive: true });
+
+      var t0 = 9000;
+      function draw(ms) {
+        if (!size()) return false;
+        px += (tx - px) * 0.2;
+        py += (ty - py) * 0.2;
+        gl.uniform1f(uTime, t0 + ms);
+        gl.uniform2f(uPtr, px, py);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        canvas.classList.add('lit');
+        return true;
+      }
+      draw(0);
+      if (reduceMotion) return;
+
+      // Кожен зайвий шейдер, що крутиться постійно, чути на всій
+      // сторінці — рядок із телеканалами починає смикатись. Малюємо
+      // тільки поки секція на екрані й вкладка попереду.
+      var start = performance.now(), raf = 0, onScreen = false;
+      function loop() {
+        raf = requestAnimationFrame(loop);
+        draw(performance.now() - start);
+      }
+      function play() { if (!raf && onScreen && !document.hidden) loop(); }
+      function stop() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          onScreen = es[0].isIntersecting;
+          onScreen ? play() : stop();
+        }, { threshold: 0 }).observe(canvas);
+      } else { onScreen = true; play(); }
+      document.addEventListener('visibilitychange', function () {
+        document.hidden ? stop() : play();
+      });
+      window.addEventListener('resize', function () { w = 0; h = 0; });
+    }
+  })();
+
+
+  /* ----------------------------------------------------------
      STORY VIDEO
      The native centred play button lands on the reporter's face, so the
      video ships without controls and we drive the first play ourselves.
