@@ -1206,16 +1206,48 @@
         disable_web_page_preview: true
       };
 
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-        .then(function (r) { return r.json(); })
-        .then(function (res) {
+      // Звичайний шлях. Браузер спершу питає в сервера дозвіл на запит
+      // із нашого домену; якщо дозвіл є — читаємо відповідь і точно
+      // знаємо, дійшла заявка чи ні.
+      function sendChecked() {
+        return fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function (r) {
+          return r.json().catch(function () { return null; });
+        }).then(function (res) {
           if (!res || res.ok !== true) {
-            throw new Error((res && (res.description || res.error)) || 'send failed');
+            var e = new Error((res && (res.description || res.error)) || 'send failed');
+            e.answered = true;   // сервер відповів і відмовив — це не збій звʼязку
+            throw e;
           }
+        });
+      }
+
+      // Запасний шлях, якщо дозволу немає (Worker ще не знає домену сайту).
+      // Такий запит браузер не блокує: він простий за формою — звичайний
+      // текст замість JSON, тому попередній дозвіл не потрібен. Worker
+      // читає тіло однаково. Ціна: відповідь прочитати не можна, тож про
+      // успіх ми тут не дізнаємось — вважаємо надісланим, якщо мережа не впала.
+      function sendBlind() {
+        return fetch(TG_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: JSON.stringify(data)
+        });
+      }
+
+      sendChecked()
+        .catch(function (err) {
+          // Сервер відмовив по суті — повторний лист був би дублем.
+          if (err && err.answered) throw err;
+          if (!TG_ENDPOINT) throw err;
+          console.warn('[MedOrion] Прямий запит заблоковано, йдемо в обхід:', err);
+          return sendBlind();
+        })
+        .then(function () {
           form.reset();
           openModal();
         })
