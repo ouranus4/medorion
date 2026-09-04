@@ -273,6 +273,37 @@ section.ruby::before{display:none}
   .cards-paper .card.rv{transform:none}
 }
 
+/* ---------- нагорода за текстом ----------
+   Крупний план власної статуетки з відблисками — тло під заголовком
+   блоку про сезон. Промені намальовані в самому файлі: у CSS такий
+   спалах довелося б збирати з десятка градієнтів. */
+.has-award{overflow:hidden}
+.award-bg{
+  position:absolute;top:-7%;right:-4%;z-index:0;
+  width:min(30%,340px);pointer-events:none;
+  -webkit-mask-image:radial-gradient(closest-side,#000 52%,transparent 100%);
+          mask-image:radial-gradient(closest-side,#000 52%,transparent 100%);
+}
+.award-bg img{
+  width:100%;height:auto;display:block;
+  opacity:.4;
+  animation:awardShine 6.5s ease-in-out infinite;
+}
+@keyframes awardShine{
+  0%,100%{opacity:.34;transform:scale(1)}
+  50%    {opacity:.52;transform:scale(1.025)}
+}
+@media (prefers-reduced-motion:reduce){ .award-bg img{animation:none} }
+.has-award > .wrap{position:relative;z-index:1}
+@media (max-width:860px){
+  .award-bg{width:70%;right:-18%;top:-4%}
+  .award-bg img{opacity:.26}
+  @keyframes awardShine{
+    0%,100%{opacity:.22;transform:scale(1)}
+    50%    {opacity:.34;transform:scale(1.02)}
+  }
+}
+
 /* ---------- статуетка ----------
    Власний німб і дуже повільне дихання: рух ледь помітний, інакше
    поруч із текстом він відволікав би. */
