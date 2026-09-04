@@ -339,26 +339,6 @@ section.milk{background:#F8F6F2;overflow:hidden}
    прямокутниками, на чистому білому зникає повністю. */
 section.paper{background:#FFFFFF}
 
-/* ---------- знімок у глибині світлої смуги ----------
-   Кадр із власної пресконференції, зведений майже до паперу:
-   колір знято, світло піднято, контраст прибрано. Він має додавати
-   обʼєму, а не читатись як фотографія на сторінці. */
-section.has-photo{overflow:hidden}
-section.has-photo > .wrap{position:relative;z-index:1}
-.photo-bg{
-  position:absolute;top:50%;right:-4%;z-index:0;
-  width:min(46%,520px);
-  transform:translateY(-50%);
-  pointer-events:none;
-}
-.photo-bg img{width:100%;height:auto;display:block;opacity:.62}
-@media (max-width:860px){
-  /* На телефоні знімок неминуче лягає під текст, тож світлішає ще
-     вдвічі й зсувається за правий край. */
-  .photo-bg{width:96%;right:-26%}
-  .photo-bg img{opacity:.34}
-}
-
 .dna-bg{
   position:absolute;top:0;right:-6%;z-index:0;
   width:min(42%,460px);height:100%;
