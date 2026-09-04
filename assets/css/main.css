@@ -161,6 +161,10 @@ section.space{background:var(--black);overflow:hidden;isolation:isolate}
 }
 section.space > .wrap,
 section.has-neuro > .wrap{position:relative;z-index:3}
+/* Секція з фоновим шаром: шар треба обрізати по краю, а контент
+   підняти над ним. */
+section.has-layer{overflow:hidden}
+section.has-layer > .wrap{position:relative;z-index:1}
 
 /* Той самий кадр, але розпечений — як тло на картках експертів:
    планета не просто червонить, а світиться. */
@@ -273,40 +277,6 @@ section.ruby::before{display:none}
   .cards-paper .card.rv{transform:none}
 }
 
-/* ---------- нагорода за текстом ----------
-   Крупний план власної статуетки з відблисками — тло під заголовком
-   блоку про сезон. Промені намальовані в самому файлі: у CSS такий
-   спалах довелося б збирати з десятка градієнтів. */
-.has-award{overflow:hidden}
-.award-bg{
-  position:absolute;top:-7%;right:-4%;z-index:0;
-  width:min(30%,340px);pointer-events:none;
-  -webkit-mask-image:radial-gradient(closest-side,#000 52%,transparent 100%);
-          mask-image:radial-gradient(closest-side,#000 52%,transparent 100%);
-}
-.award-bg img{
-  width:100%;height:auto;display:block;
-  opacity:.4;
-  animation:awardShine 6.5s ease-in-out infinite;
-}
-@keyframes awardShine{
-  0%,100%{opacity:.34;transform:scale(1)}
-  50%    {opacity:.52;transform:scale(1.025)}
-}
-@media (prefers-reduced-motion:reduce){ .award-bg img{animation:none} }
-.has-award > .wrap{position:relative;z-index:1}
-@media (max-width:860px){
-  /* На телефоні вона лежала просто під заголовком і різала його
-     навпіл. Тепер це маленький акцент у кутку, поверх якого нічого
-     не написано. */
-  .award-bg{width:30%;right:0;top:auto;bottom:auto;margin-top:-5%}
-  .award-bg img{opacity:.5}
-  @keyframes awardShine{
-    0%,100%{opacity:.42;transform:scale(1)}
-    50%    {opacity:.62;transform:scale(1.03)}
-  }
-}
-
 /* ---------- нейронний шум ----------
    Живий шейдер замість фотографії нейрона: ті самі нитки світла, але
    вони течуть і тягнуться за курсором. Колір уже помножений на альфу,
@@ -325,6 +295,7 @@ section.ruby::before{display:none}
           mask-image:linear-gradient(96deg,transparent 0%,rgba(0,0,0,.22) 26%,#000 66%);
 }
 .neuro.lit{opacity:.46}
+#laureates .neuro.lit{opacity:.32}
 
 /* зоряне поле: те саме місце в шарах, але звичайне 2D-полотно */
 .starfield{
