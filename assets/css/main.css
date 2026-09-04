@@ -241,6 +241,102 @@ section.ruby::before{display:none}
 /* підсвітка від курсора розрахована на чорне тло — на білому лише бруднить */
 .cards-paper .card::before,.cards-paper .card::after{display:none}
 
+/* Чип напряму — червоною плашкою: у білій картці це єдина мітка,
+   яку ловить око першою. */
+.cards-paper .card-tag{
+  background:#D2000C;border-color:#D2000C;color:#fff;font-weight:600;
+}
+
+/* Картки заходять не просто знизу, а з легкого нахилу й меншого
+   масштабу — по черзі, за наявним стагером d1…d3. */
+.cards-paper .card.rv{
+  transform:translateY(34px) scale(.96);
+  transition:opacity 1s var(--ease),transform 1s var(--ease),
+             box-shadow .45s var(--ease),background .45s var(--ease);
+}
+.cards-paper .card.rv.on{transform:none}
+.cards-paper .card{position:relative}
+/* тонка червона риска під заголовком, що виростає на наведення */
+.cards-paper .card h3{position:relative;padding-bottom:8px}
+.cards-paper .card h3::after{
+  content:"";position:absolute;left:0;bottom:0;height:2px;width:0;
+  background:#D2000C;border-radius:2px;
+  transition:width .5s var(--ease);
+}
+.cards-paper .card:hover h3::after{width:44px}
+.cards-paper .card:hover .card-icon{
+  border-color:rgba(210,0,12,.35);
+  box-shadow:0 0 0 4px rgba(210,0,12,.08);
+}
+.cards-paper .card-icon{transition:border-color .45s var(--ease),box-shadow .45s var(--ease)}
+@media (prefers-reduced-motion:reduce){
+  .cards-paper .card.rv{transform:none}
+}
+
+/* ---------- статуетка ----------
+   Власний німб і дуже повільне дихання: рух ледь помітний, інакше
+   поруч із текстом він відволікав би. */
+.statue{
+  margin:0;z-index:2;
+  pointer-events:none;
+  transform:translateY(46px);
+  transition:opacity 1.3s var(--ease),transform 1.3s var(--ease);
+}
+.statue.on{transform:none}
+.statue img{
+  position:relative;z-index:1;
+  width:100%;height:auto;display:block;
+  filter:drop-shadow(0 26px 46px rgba(0,0,0,.6));
+  animation:statueFloat 7s ease-in-out infinite;
+}
+.statue-glow{
+  position:absolute;z-index:0;left:50%;top:24%;
+  width:150%;aspect-ratio:1/1;
+  translate:-50% 0;
+  border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,90,100,.30),transparent 72%);
+  filter:blur(6px);
+  animation:statueGlow 7s ease-in-out infinite;
+}
+@keyframes statueFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%    {transform:translateY(-14px) rotate(-1.1deg)}
+}
+@keyframes statueGlow{
+  0%,100%{opacity:.75;transform:translate(-50%,0) scale(1)}
+  50%    {opacity:1;  transform:translate(-50%,-6px) scale(1.05)}
+}
+@media (prefers-reduced-motion:reduce){
+  .statue img,.statue-glow{animation:none}
+  .statue{transform:none}
+}
+/* Статуетка не може просто лежати поверх карток — вона перекривала
+   четверту. Тому на широкому екрані блок стає у дві колонки: текст і
+   картки 2x2 ліворуч, статуетка на всю висоту праворуч. */
+@media (min-width:1024px){
+  #about > .wrap{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) clamp(190px,19vw,268px);
+    column-gap:clamp(28px,3.4vw,64px);
+    align-items:end;
+  }
+  #about .sec-head{grid-column:1;grid-row:1}
+  #about .bento-4{grid-column:1;grid-row:2;grid-template-columns:repeat(2,minmax(0,1fr))}
+  #about .statue{grid-column:2;grid-row:1 / span 2;width:100%;align-self:end}
+}
+@media (max-width:1023px){
+  /* Вужче — статуетка стає в потік між текстом і картками. Розмір
+     задаємо висотою, а не шириною: пропорція 1:3,4, і при ширині в
+     половину екрана вона займала б дві третини висоти й відсувала
+     картки за межу видимості. */
+  .statue{
+    width:auto;height:clamp(240px,36vh,330px);
+    display:flex;justify-content:center;
+    margin:clamp(6px,2vw,14px) auto clamp(26px,5vw,34px);
+  }
+  .statue img{width:auto;height:100%}
+}
+
 /* ---------- нейронний шум ----------
    Живий шейдер замість фотографії нейрона: ті самі нитки світла, але
    вони течуть і тягнуться за курсором. Колір уже помножений на альфу,
