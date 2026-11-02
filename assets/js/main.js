@@ -160,7 +160,7 @@
     window.addEventListener('error', open);
 
     // чекаємо тільки на те, що видно на першому екрані
-    var critical = ['assets/img/logo.png', 'assets/img/hosts-cut.webp', 'assets/img/space-bg.webp'];
+    var critical = ['assets/img/logo.webp', 'assets/img/hosts-cut.webp', 'assets/img/space-bg.webp'];
     var total = critical.length + 1;          // + шрифти
     var done  = 0;
     var shown = 0;
@@ -1000,15 +1000,19 @@
      A card shows its monogram until a real photo exists at
      assets/img/laureates/<name>.jpg — then the photo swaps in.
      ---------------------------------------------------------- */
-  $$('.lau-face[data-portrait]').forEach(function (face) {
+  // Проба — звичайний Image(), на нього loading="lazy" не діє, тож без
+  // спостерігача всі портрети качалися б одразу при відкритті сторінки.
+  // Їх два десятки і лежать вони далеко внизу: на телефоні це були
+  // зайві мегабайти ще до того, як людина побачила перший екран.
+  function loadPortrait(face) {
     var src = face.getAttribute('data-portrait');
-    if (!src) return;
+    if (!src || face.dataset.done) return;
+    face.dataset.done = '1';
     var probe = new Image();
     probe.onload = function () {
       var img = document.createElement('img');
       img.src = src;
       img.alt = '';
-      img.loading = 'lazy';
       img.decoding = 'async';
       // розміри беремо з уже завантаженої проби: без них браузер не знає
       // висоту наперед і макет сіпається, коли фото стає на місце
@@ -1019,7 +1023,23 @@
       if (mono) mono.style.display = 'none';
     };
     probe.src = src;
-  });
+  }
+
+  var faces = $$('.lau-face[data-portrait]');
+  if ('IntersectionObserver' in window) {
+    // 600 px запасу: фото встигає стати на місце до того, як картка
+    // доїде до екрана, і монограма не блимає
+    var faceIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        faceIO.unobserve(e.target);
+        loadPortrait(e.target);
+      });
+    }, { rootMargin: '600px 0px' });
+    faces.forEach(function (f) { faceIO.observe(f); });
+  } else {
+    faces.forEach(loadPortrait);
+  }
 
   /* ----------------------------------------------------------
      LAUREATE INSTAGRAM LINKS
