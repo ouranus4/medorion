@@ -2072,3 +2072,48 @@ body.locked{overflow:hidden}
   .proof-faces img:nth-child(5){display:none}
   .proof-text{white-space:normal;font-size:12.5px;text-align:left}
 }
+
+/* ============ ОФІЦІЙНЕ ЗВЕРНЕННЯ — перенесення церемонії ============
+   Окрема смуга одразу під hero. Читається як лист оргкомітету, а не як
+   рекламний блок: вузька колонка, ліва червона межа замість рамки,
+   жодних плашок і тіней. Вставка «Усі домовленості зберігаються» —
+   єдине кольорове пляно, бо це головне, заради чого звернення читають. */
+.notice{
+  max-width:720px;margin:0 auto;
+  padding-left:clamp(18px,2.6vw,30px);
+  border-left:2px solid var(--ruby);
+}
+.notice-eyebrow{
+  font-size:clamp(11px,1.15vw,13px);font-weight:600;
+  letter-spacing:.17em;text-transform:uppercase;
+  color:var(--ruby);margin:0 0 14px;
+}
+.notice-title{
+  font-size:clamp(26px,3.6vw,46px);line-height:1.08;letter-spacing:-.02em;
+  margin:0 0 clamp(20px,2.4vw,30px);
+}
+.notice-body p,.notice-keep p{
+  font-size:clamp(15px,1.45vw,17px);line-height:1.62;margin:0 0 14px;
+}
+.notice-body p:last-child,.notice-keep p:last-child{margin-bottom:0}
+.notice-keep{
+  margin:clamp(22px,2.6vw,32px) 0;
+  padding:clamp(18px,2.2vw,26px);
+  border-radius:var(--r-box);
+  background:rgba(229,9,20,.055);
+  border:1px solid rgba(229,9,20,.16);
+}
+.nk-head{
+  font-weight:700;color:var(--ruby);
+  margin:0 0 10px !important;
+}
+.notice-sign{
+  font-size:clamp(17px,2vw,23px);font-weight:600;line-height:1.3;
+  letter-spacing:-.01em;margin:0 0 10px;
+}
+.notice-from{
+  font-size:clamp(13px,1.25vw,15px);opacity:.72;margin:0;
+}
+@media (max-width:620px){
+  .notice{padding-left:16px}
+}
